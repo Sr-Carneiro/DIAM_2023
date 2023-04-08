@@ -2,6 +2,7 @@ from django.urls import include, path
 from . import views
 # (. significa que importa views da mesma directoria)
 urlpatterns = [
- path("", views.template, name="template"),
+  path("", views.template, name="template"),
+  path("template", views.template, name="template"),
 
 ]

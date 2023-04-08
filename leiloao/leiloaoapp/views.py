@@ -9,5 +9,5 @@ from django.http import HttpResponse
 # de login/logout, footer, ect
 
 def template(request):
-    return HttpResponse("Pagina de entrada da app LEILOÃO.")
+    return render(request, 'leiloao/template.html')
 
