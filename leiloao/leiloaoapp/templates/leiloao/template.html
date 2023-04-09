@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Template</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'leiloaoapp/style.css' %}">  </head>
-  <body>
-    <header>
-      <div class="user-info">
-        <img src="user_profile_picture.jpg" alt="User Profile Picture">
-        <span class="username">John Doesssss</span>
-      </div>
-    </header>
-    <nav>
-      <ul>
-        <a href="#">Início</a>
-        <a href="#">Minhas Bids</a>
-        <a href="#">Minhas Sales</a>
-        <a href="#">Perfil</a>
-      </ul>
-    </nav>
-    <div class="content">
-      <h1>Page Title</h1>
-      <p>Page content goes here...</p>
+<head>
+  <title>Template</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'leiloaoapp/style.css' %}">
+</head>
+<body>
+<div class="container">
+  <div class="top-left">
+    <div class="userimage">
+      {% if user.is_authenticated %}
+      <img src="{{ MEDIA_URL }}{{ appuser.image_path }}" alt="">
+      {% else %}
+      <img src="{% static 'leiloaoapp/images/73-730482_existing-user-default-avatar.png' %}" alt="">
+      {% endif %}
     </div>
-    <footer>
-      <p>2023 DIAM </p>
-    </footer>
-  </body>
+    <h3>Bem-vindo(a)</h3>
+    <span class="username">John Doesssss</span>
+  </div>
+  <div class="up-center">
+    <p>
+      <a href="#">Início</a>
+      <a href="#">Minhas Bids</a>
+      <a href="#">Minhas Sales</a>
+      <a href="#">Perfil</a>
+    </p>
+  </div>
+  {% block content %}
+  <div class="centered">
+    <p>Zona que vai ser diferente em todas as páginas, o resto mantém-se igual</p>
+  </div>
+  <div class="top-right">
+    {% if user.is_authenticated %}
+    <a href="{% url 'votacao:logout_view' %}">Logout</a>
+    {% endif %}
+  </div>
+  {% endblock %}
+  <div class="bottom-right">
+    <p>DIAM - ISCTE</p>
+  </div>
+</div>
+</body>
 </html>
