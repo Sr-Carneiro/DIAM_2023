@@ -12,8 +12,8 @@ from django.http import HttpResponse
 # TODO: As Minhas Sales
 # TODO: As Minhas Bids
 # TODO: Zona de Administrador
-# TODO:
-# TODO:
+# TODO: Adicionar a minha Watchlist
+# TODO: Watchlist
 
 # INDEX -> Vai servir de template para heranca de estrutura HTML das outras
 # paginas. Deve conter header, navigation bar, foto de perfil, opcoes
