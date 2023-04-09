@@ -176,13 +176,16 @@ label > h6 {
   background-color: #756036;
 }
 
+
+/*TODO: resolver problema de mostrar imagens retangulares
+   so quero uma janela quadrada do centro da imagem*/
 .userimage {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
-  height: 30px;
-  width: 35px;
+  height: 30%;
+  width: 30%;
 }
 
 img {
