@@ -7,6 +7,7 @@ from django.http import HttpResponse
 # TODO: Adicionar Sales -> Form
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Remover Sale
+# TODO: Ver Todos as Sales
 # TODO: Fazer uma Bid -> Form
 # TODO: Ver Perfil
 # TODO: As Minhas Sales
@@ -17,7 +18,7 @@ from django.http import HttpResponse
 
 # INDEX -> Vai servir de template para heranca de estrutura HTML das outras
 # paginas. Deve conter header, navigation bar, foto de perfil, opcoes
-# de login/logout, footer, ect
+# de login/logout, footer, etc
 
 def template(request):
     return render(request, 'leiloao/template.html')
