@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-# TODO: Logins e Logouts
-# TODO: Registar -> Form
+# TODO: Logins e Logouts -> Eduardo
+# TODO: Registar -> Form -> Emanuel
 # TODO: Adicionar uma foto de utilizador
 # TODO: Adicionar Sales -> Form
 # TODO: Adicionar uma foto a uma Sale
