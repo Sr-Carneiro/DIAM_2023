@@ -6,6 +6,8 @@ from django.utils import timezone
 import datetime
 
 #AppUser: Representa um utilizador da aplicação
+
+
 class AppUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -17,10 +19,14 @@ class AppUser(models.Model):
         return self.name
 
 # UserType: Representa um tipo de Utilizador(Admin, user, etc)
+
+
 class UserType(models.Model):
     description = models.CharField(max_length=255)
+
     def __str__(self):
         return self.description
+
 
 class Sale(models.Model):
     title = models.CharField(max_length=255)
@@ -35,6 +41,7 @@ class Sale(models.Model):
     seller = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='Seller')
     bidder = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='Bidder')
     currentHighestBid = models.ForeignKey('Bid', on_delete=models.CASCADE, null=True, blank=True, related_name='HighestBid')
+
 
 class Bid(models.Model):
     value = models.DecimalField(max_digits=10, decimal_places=2)
