@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="centered">
+        <h1>Criar nova Sale</h1>
+        {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+        <form action="{% url 'leiloaoapp:adicionarSale' %}" method="post">
+            {% csrf_token %}
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title"><br>
+
+            <label for="description">Description:</label><br>
+            <input type="text" id="description" name="description"><br>
+
+            <label for="initialAsk">Initial Ask:</label><br>
+            <input type="number" id="initialAsk" name="initialAsk"><br>
+
+            <label for="bidStartDate">Bid Start Date:</label><br>
+            <input type="datetime-local" id="bidStartDate" name="bidStartDate"><br>
+
+            <label for="bidEndDate">Bid End Date:</label><br>
+            <input type="datetime-local" id="bidEndDate" name="bidEndDate"><br>
+
+            <button type="submit">Guardar</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -16,6 +18,9 @@ from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+
+from .models import Sale, AppUser
+
 
 ## TODO: Login e Logout -> Por Bonito
 # TODO: Registar -> Form -> Emanuel
@@ -76,3 +81,39 @@ def logout_view(request):
     return redirect('leiloaoapp:index')
 
 
+def adicionarSale(request):
+    if not request.user.is_authenticated:
+        # TODO: mudar isto para ir para uma página de erro genérica
+        return render(request, 'leiloaoapp/index.html')
+    if request.method == 'POST':
+        title = request.POST['title']
+        description = request.POST['description']
+        initialAsk = request.POST['initialAsk']
+        bidStartDate_str = request.POST['bidStartDate']
+        bidEndDate_str = request.POST['bidEndDate']
+        seller_username = request.user.username
+
+        bidStartDate = datetime.strptime(bidStartDate_str, '%Y-%m-%dT%H:%M')
+        bidEndDate = datetime.strptime(bidEndDate_str, '%Y-%m-%dT%H:%M')
+
+        seller = get_object_or_404(AppUser, user__username=seller_username)
+
+        creatingSale = Sale.objects.create(
+            title=title,
+            description = description,
+            image_path = "",
+            isSold = False,
+            initialAsk = initialAsk,
+            bidStartDate = bidStartDate,
+            bidEndDate = bidEndDate,
+            lastBidDate = None,
+            seller = seller,
+            bidder = None,
+            currentHighestBid = None
+        )
+        creatingSale.save()
+        print("Sale gravada")
+        return HttpResponseRedirect(reverse('leiloaoapp:index'))
+    else:
+        print("Sale não gravada!")
+        return render(request, 'leiloaoapp/adicionarSale.html')

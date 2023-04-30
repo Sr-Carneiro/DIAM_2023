@@ -23,12 +23,13 @@
   </div>
   <div class="up-center">
     <p>
+      <a href="{% url 'leiloaoapp:index' %}">Início</a>
       {% if user.is_authenticated %}
       <a href="#">Minhas Bids</a>
       <a href="#">Minhas Sales</a>
+      <a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a>
       <a href="#">Perfil</a>
       {% else %}
-      <a href="{% url 'leiloaoapp:index' %}">Início</a>
       <a href="{% url 'leiloaoapp:registar'%}">Registar</a>
       {% endif %}
     </p>
