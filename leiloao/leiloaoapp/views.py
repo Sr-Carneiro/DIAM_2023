@@ -22,10 +22,10 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Sale, AppUser
 
 
-## TODO: Login e Logout -> Por Bonito
+## TODO: Login e Logout -> Falta por bonito
 # TODO: Registar -> Form -> Emanuel
 # TODO: Adicionar uma foto de utilizador ->
-# TODO: Adicionar Sales -> Form
+# TODO: Adicionar Sales -> Falta por bonito
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Remover Sale
 # TODO: Ver Todos as Sales -> Por isto no INDEX.HTML
@@ -100,16 +100,16 @@ def adicionarSale(request):
 
         creatingSale = Sale.objects.create(
             title=title,
-            description = description,
-            image_path = "",
-            isSold = False,
-            initialAsk = initialAsk,
-            bidStartDate = bidStartDate,
-            bidEndDate = bidEndDate,
-            lastBidDate = None,
-            seller = seller,
-            bidder = None,
-            currentHighestBid = None
+            description=description,
+            image_path="",
+            isSold=False,
+            initialAsk=initialAsk,
+            bidStartDate=bidStartDate,
+            bidEndDate=bidEndDate,
+            lastBidDate=None,
+            seller=seller,
+            bidder=None,
+            currentHighestBid=None
         )
         creatingSale.save()
         print("Sale gravada")
@@ -117,3 +117,18 @@ def adicionarSale(request):
     else:
         print("Sale não gravada!")
         return render(request, 'leiloaoapp/adicionarSale.html')
+
+#TODO: chamar o remover Sale algures
+def remove_sale(request, sale_id):
+    if not request.user.is_authenticated:
+        return render(request, 'leiloaoapp/index.html')
+
+    sale = get_object_or_404(Sale, id=sale_id)
+
+    if sale.seller != request.user.username:
+        # TODO: redirect to a generic error page instead
+        return render(request, 'leiloaoapp/index.html')
+
+    sale.delete()
+
+    return redirect('leiloao:index')
