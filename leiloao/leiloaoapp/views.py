@@ -15,15 +15,15 @@ from django.template import loader
 from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
-# TODO: Logins e Logouts -> Eduardo
+## TODO: Login e Logout -> Por Bonito
 # TODO: Registar -> Form -> Emanuel
-# TODO: Adicionar uma foto de utilizador
+# TODO: Adicionar uma foto de utilizador ->
 # TODO: Adicionar Sales -> Form
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Remover Sale
-# TODO: Ver Todos as Sales
+# TODO: Ver Todos as Sales -> Por isto no INDEX.HTML
 # TODO: Fazer uma Bid -> Form
 # TODO: Ver Perfil
 # TODO: As Minhas Sales
@@ -61,9 +61,18 @@ def login_view(request):
             context = {
                 'utilizador': user
             }
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('leiloaoapp:index'))
         else:
             context = {
                 'login_unsuccessful': 'Credenciais inválidas'
             }
             return render(request, 'leiloaoapp/login_view.html', context)
+
+
+def logout_view(request):
+    if not request.user.is_authenticated:
+        return render(request, 'leiloaoapp/login_view.html')
+    logout(request)
+    return redirect('leiloaoapp:index')
+
+
