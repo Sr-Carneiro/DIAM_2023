@@ -13,8 +13,10 @@
         {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-        <form action="{% url 'leiloaoapp:adicionarSale' %}" method="post">
+        <form action="{% url 'leiloaoapp:adicionarSale' %}" method="post" enctype="multipart/form-data>
             {% csrf_token %}
+            {{ form.as_p }}
+
             <label for="title">Title:</label><br>
             <input type="text" id="title" name="title"><br>
 
@@ -30,9 +32,12 @@
             <label for="bidEndDate">Bid End Date:</label><br>
             <input type="datetime-local" id="bidEndDate" name="bidEndDate"><br>
 
-            <button type="submit">Guardar</button>
+            <div class="form-group">
+                <label for="image">Imagens:</label>
+                <input type="file" id="image" name="multiuploader_file">
+            </div>
+                <button type="submit">Guardar</button>
         </form>
-
     </div>
 </div>
 {% endblock %}

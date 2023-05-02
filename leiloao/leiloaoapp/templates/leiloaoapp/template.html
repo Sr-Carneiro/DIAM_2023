@@ -25,12 +25,12 @@
     <p>
       <a href="{% url 'leiloaoapp:index' %}">Início</a>
       {% if user.is_authenticated %}
-      <a href="#">Minhas Bids</a>
-      <a href="#">Minhas Sales</a>
+      <a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a>
+      <a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a>
       <a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a>
-      <a href="#">Perfil</a>
+      <a href="{% url 'leiloaoapp:perfil' %}">Perfil</a>
       {% else %}
-      <a href="{% url 'leiloaoapp:registar'%}">Registar</a>
+      <a href="{% url 'leiloaoapp:registar' %}">Registar</a>
       {% endif %}
     </p>
   </div>

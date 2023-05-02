@@ -53,6 +53,36 @@ def index(request):
 def registar(request):
     return render(request, 'leiloaoapp/registar.html')
 
+def myBid(request):
+    return render(request, 'leiloaoapp/myBid.html')
+
+
+def add_sale(request):
+    if request.method == 'POST':
+        form = SaleForm(request.POST)
+        if form.is_valid():
+            sale = form.save(commit=False)
+            sale.user = request.user
+            sale.save()
+
+            # Save uploaded images
+            multiuploader_image = MultiuploaderImage()
+            multiuploader_image.user_key = sale.pk  # Set user key as the sale's primary key
+            multiuploader_image.save(request)
+
+            return redirect('leiloaoapp:index')
+    else:
+        form = SaleForm()
+
+    return render(request, 'leiloaoapp/add_sale.html', {'form': form})
+
+def perfil(request):
+    user = request.user
+    return render(request, 'leiloaoapp/perfil.html', {'user': user})
+
+def mySale(request):
+    return render(request, 'leiloaoapp/mySale.html')
+
 
 def login_view(request):
     if request.method == 'GET':
