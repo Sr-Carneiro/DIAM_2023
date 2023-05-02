@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h1>{{ user.username }}</h1>
+            <p>Nome completo: {{ user.profile.nome_completo }}</p>
+            <p>E-mail: {{ user.email }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

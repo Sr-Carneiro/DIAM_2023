@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao - Registro</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="centered">
+        <h1>Registar</h1>
+        {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+        <form action="{% url 'leiloaoapp:registar' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Nome de usuário:</label><br>
+            <input type="text" id="username" name="username"><br>
+
+            <label for="email">Endereço de e-mail:</label><br>
+            <input type="email" id="email" name="email"><br>
+
+            <label for="password1">Senha:</label><br>
+            <input type="password" id="password1" name="password1"><br>
+
+            <label for="password2">Confirme a senha:</label><br>
+            <input type="password" id="password2" name="password2"><br>
+
+            <button type="submit">Registrar</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

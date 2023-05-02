@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao - Índice</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="centered">
+    <h1>Bem-vindo ao Leiloao</h1>
+    <p>Escolha uma das opções abaixo para continuar:</p>
+    <ul>
+        <li><a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a></li>
+        <li><a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a></li>
+        <li><a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a></li>
+        <li><a href="{% url 'leiloaoapp:perfil' %}">Perfil</a></li>
+        <li><a href="{% url 'leiloaoapp:login_view' %}">Login</a></li>
+    </ul>
+  {% endblock %}
+    </div>
+</body>
+</html>
