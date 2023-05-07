@@ -21,7 +21,7 @@ from .models import Sale, Bid, AppUser
 # TODO: Ver Todos as Sales -> Por isto no INDEX.HTML -> ESCOLHER CAMPOS E POR BONITO
 # TODO: Fazer uma Bid -> Form
 # TODO: Ver Perfil
-# TODO: As Minhas Sales
+# TODO: As Minhas Sales -> Por Bonito
 # TODO: As Minhas Bids
 # TODO: Zona de Administrador
 # TODO: Adicionar a minha Watchlist
@@ -72,7 +72,12 @@ def perfil(request):
     return render(request, 'leiloaoapp/perfil.html', {'user': user})
 
 def mySale(request):
-    return render(request, 'leiloaoapp/mySale.html')
+    apuser = request.user.appuser
+    sales_list = Sale.objects.filter(seller=apuser)
+    context = {
+        'sales_list': sales_list
+    }
+    return render(request, 'leiloaoapp/mySale.html', context)
 
 
 def login_view(request):
