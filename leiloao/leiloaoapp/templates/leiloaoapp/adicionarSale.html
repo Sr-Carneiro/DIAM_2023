@@ -13,7 +13,7 @@
         {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-        <form action="{% url 'leiloaoapp:adicionarSale' %}" method="post" enctype="multipart/form-data>
+        <form action="{% url 'leiloaoapp:adicionarSale' %}" method="post" enctype="multipart/form-data">            {% csrf_token %}
             {% csrf_token %}
             {{ form.as_p }}
 

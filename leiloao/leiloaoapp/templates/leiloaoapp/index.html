@@ -26,6 +26,7 @@
                 <th>Title</th>
                 <th>Description</th>
                 <th>Current Bid</th>
+                <th>Imagem</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,7 @@
                 <td>{{ sale.title|default:"N/A" }}</td>
                 <td>{{ sale.description|default:"N/A" }}</td>
                 <td>{{ sale.currentHighestBid|default:"N/A" }}</td>
+                <td>{{ sale.image_path|default:"N/A" }}</td>
             </tr>
             {% empty %}
             <tr>
