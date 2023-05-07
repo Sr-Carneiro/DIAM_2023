@@ -17,5 +17,6 @@ urlpatterns = [
   path('index/', views.getSales, name='getSales'),
   path("<int:sale_id>", views.detalhe, name='detalhe'),
   path('<int:sale_id>/colocar_bid', views.colocarBid, name='colocarBid'),
+  path('remove-sale/<int:sale_id>/', views.remove_sale, name='remove_sale'),
 
 ]

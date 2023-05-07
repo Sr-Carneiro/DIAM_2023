@@ -32,13 +32,25 @@
             {{ seconds_remaining }} segundos
             {% else %}
             nada para mostrar
-            {% endif %}</h2>
+            {% endif %}
+        </h2>
+        {% if user.is_authenticated %}
         <form method="POST" action="{% url 'leiloaoapp:colocarBid' sale.id %}">
             {% csrf_token %}
             <label for="new_bid">Colocar Bid:</label>
             <input type="number" id="new_bid" name="new_bid" step="any" required>
             <input type="submit" value="Colocar Bid">
         </form>
+        <br>
+        {% if request.user.appuser == sale.seller %}
+        <form method="POST" action="{% url 'leiloaoapp:remove_sale' sale.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Cancelar Bid">
+        </form>
+        {% endif %}
+        {% else %}
+        <p>Faça Login ou registe-se para começar</p>
+        {% endif %}
         {% else %}
         <p>Terminou em: {{ sale.bidEndDate }}</p>
         {% endif %}

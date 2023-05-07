@@ -34,7 +34,7 @@ def template(request):
 
 
 def index(request):
-    sales_list = Sale.objects.order_by('title')[:5]
+    sales_list = Sale.objects.filter(bidEndDate__gt=timezone.now())
     context = {
         'sales_list': sales_list
     }
@@ -110,7 +110,8 @@ def logout_view(request):
 def adicionarSale(request, timezone=None):
     if not request.user.is_authenticated:
         # TODO: mudar isto para ir para uma página de erro genérica
-        return render(request, 'leiloaoapp/index.html')
+        return render(request, 'leiloaoapp/adicionarSale.html',
+                  { 'error_message': 'Tem de fazer Login para criar Sales.'})
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -142,24 +143,28 @@ def adicionarSale(request, timezone=None):
     else:
         return render(request, 'leiloaoapp/adicionarSale.html')
 
-#TODO: chamar o remover Sale algures
-def remove_sale(request, sale_id):
-    if not request.user.is_authenticated:
-        return render(request, 'leiloaoapp/index.html')
 
+def remove_sale(request, sale_id):
     sale = get_object_or_404(Sale, id=sale_id)
 
-    if sale.seller != request.user.username:
-        # TODO: redirect to a generic error page instead
-        return render(request, 'leiloaoapp/index.html')
+    if not request.user.is_authenticated:
+        return render(request, 'leiloaoapp/detalhe.html',
+                      {'sale': sale, 'error_message': 'Tem de fazer Login para interagir com as Sale.'})
 
-    sale.delete()
 
-    return redirect('leiloao:index')
+    if sale.seller != request.user.appuser:
+        return render(request, 'leiloaoapp/detalhe.html',
+                      {'sale': sale, 'error_message': 'Não pode cancelar Sales de outro Seller.'})
+
+    sale.bidEndDate = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    sale.save()
+
+    return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
 
 
 def getSales(request):
     try:
+        #sales = Sale.objects.all()
         sales = Sale.objects.all()
         return render(request, 'index.html', {'sales': sales})
     except OperationalError as e:
