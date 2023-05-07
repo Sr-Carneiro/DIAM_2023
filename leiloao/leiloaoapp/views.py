@@ -1,22 +1,9 @@
 from datetime import datetime
+from sqlite3 import OperationalError
 
-from django.shortcuts import render
-from django.http import HttpResponse
-
-import os
-
-from django.conf.global_settings import MEDIA_URL
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.core.checks import messages
-from django.utils import timezone
-import urllib.request
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.template import loader
 from django.urls import reverse
-from django.http import HttpResponse
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Sale, AppUser
@@ -162,3 +149,13 @@ def remove_sale(request, sale_id):
     sale.delete()
 
     return redirect('leiloao:index')
+
+
+def getSales(request):
+    try:
+        sales = Sale.objects.all()
+        print(f"Number of sales: {len(sales)}")
+        print(sales)
+        return render(request, 'index.html', {'sales': sales})
+    except OperationalError as e:
+        print(f"Database error: {e}")

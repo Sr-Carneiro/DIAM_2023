@@ -21,6 +21,30 @@
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
+        <br>
+        <p>Sales Atuais</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Current Bid</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.title|default:"N/A" }}</td>
+                <td>{{ sale.description|default:"N/A" }}</td>
+                <td>{{ sale.currentHighestBid|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No sales found.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
