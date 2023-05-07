@@ -126,7 +126,7 @@ label > h6 {
 
 .centered {
   position: absolute;
-  top: 25%;
+  top: 15%;
   left: 50%;
   padding: 8px 16px;
   background-color: #228c7b;
@@ -134,7 +134,7 @@ label > h6 {
   font-size: larger;
   color: #eee5cf;
   z-index: 1;
-  transform: translate(-50%, 25%);
+  transform: translate(-50%, 15%);
   text-align: center;
 
 }
