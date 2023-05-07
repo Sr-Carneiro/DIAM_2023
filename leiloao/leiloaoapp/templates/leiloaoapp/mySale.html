@@ -3,21 +3,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Leiloao - Meus Produtos</title>
+    <title>Leiloao - Minhas Sales</title>
 </head>
 <body>
 {% block content %}
 <div class="container">
     <div class="centered">
-        <h1>Meus Produtos</h1>
-        {% if products %}
-        <ul>
-            {% for product in products %}
-            <li>{{ product.title }} - {{ product.description }} - {{ product.initial_ask }} - {{ product.bid_start_date }} - {{ product.bid_end_date }}</li>
-            {% endfor %}
-        </ul>
+        <h1>Minhas Sales</h1>
+        {% if user.is_authenticated %}
+
         {% else %}
-        <p>Você não tem produtos cadastrados.</p>
+        <p>Faça Login ou registe-se para começar</p>
+        {% endif %}
+        <br>
+        {% if sales_list %}
+        <form action="{% url 'leiloaoapp:mySale' %}" method="get">
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Current Bid</th>
+                <th>Termina Em</th>
+                <th>Imagem</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sale in sales_list %}
+            <tr>
+
+                <td>
+                    <a href="{% url 'leiloaoapp:detalhe' sale.id %}">
+                        {{ sale.title|default:"N/A" }}</a>
+                </td>
+                <td>{{ sale.currentHighestBid|default:"N/A" }}</td>
+                <td>{{ sale.bidEndDate|default:"N/A" }}</td>
+                <td>{{ sale.image_path|default:"N/A" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Não foram encontradas Sales.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         {% endif %}
     </div>
 </div>

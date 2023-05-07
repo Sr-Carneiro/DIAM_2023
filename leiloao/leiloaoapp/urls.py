@@ -15,5 +15,7 @@ urlpatterns = [
   path('myBid/', views.myBid, name='myBid'),
   path('perfil/', views.perfil, name='perfil'),
   path('index/', views.getSales, name='getSales'),
+  path("<int:sale_id>", views.detalhe, name='detalhe'),
+  path('<int:sale_id>/colocar_bid', views.colocarBid, name='colocarBid'),
 
 ]

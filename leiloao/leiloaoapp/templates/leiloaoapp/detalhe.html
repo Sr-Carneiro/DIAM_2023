@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao - Índice</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="centered">
+        {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+        <h1>Sale: "{{ sale.title }}"</h1>
+        <p>{{ sale.description }}</p>
+        <p>Pedido Inicial: {{ sale.initialAsk }}€</p>
+
+        <p>Current highest bid:
+            {% if sale.currentHighestBid %}
+            {{ sale.currentHighestBid }}
+            {% else %}
+            Ainda não houve Bids
+            {% endif %}
+        </p>
+
+        <p>Bid Atual: {{ sale.currentHighestBid }}</p>
+
+        {% if days_remaining > 0 or hours_remaining > 0 or minutes_remaining > 0 or seconds_remaining > 0 %}
+        <h2>Restam: {{ days_remaining }} dias, {{ hours_remaining }} horas, {{ minutes_remaining }} minutos,
+            {% if seconds_remaining %}
+            {{ seconds_remaining }} segundos
+            {% else %}
+            nada para mostrar
+            {% endif %}</h2>
+        <form method="POST" action="{% url 'leiloaoapp:colocarBid' sale.id %}">
+            {% csrf_token %}
+            <label for="new_bid">Colocar Bid:</label>
+            <input type="number" id="new_bid" name="new_bid" step="any" required>
+            <input type="submit" value="Colocar Bid">
+        </form>
+        {% else %}
+        <p>Terminou em: {{ sale.bidEndDate }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
