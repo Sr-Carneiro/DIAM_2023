@@ -1,6 +1,5 @@
 
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from sqlite3 import OperationalError
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
@@ -103,7 +102,7 @@ def logout_view(request):
     return redirect('leiloaoapp:index')
 
 
-def adicionarSale(request):
+def adicionarSale(request, timezone=None):
     if not request.user.is_authenticated:
         # TODO: mudar isto para ir para uma página de erro genérica
         return render(request, 'leiloaoapp/index.html')
@@ -134,10 +133,8 @@ def adicionarSale(request):
             currentHighestBid=None
         )
         creatingSale.save()
-        print("Sale gravada")
         return HttpResponseRedirect(reverse('leiloaoapp:index'))
     else:
-        print("Sale não gravada!")
         return render(request, 'leiloaoapp/adicionarSale.html')
 
 #TODO: chamar o remover Sale algures
@@ -188,7 +185,6 @@ def detalhe(request, sale_id):
 
 
 def colocarBid(request, sale_id):
-    print("HAMAKEBABA")
     sale = get_object_or_404(Sale, pk=sale_id)
     if request.method == 'POST':
         value = request.POST['new_bid']
@@ -197,8 +193,12 @@ def colocarBid(request, sale_id):
         value = float(value)
         if value <= sale.initialAsk:
             return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'O valor do Bid deve ser maior que o preço inicial.'})
-        if timezone.now() < sale.bidStartDate or timezone.now() > sale.bidEndDate:
+        if timezone.now() > sale.bidEndDate:
             return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Esta Sale já terminou.'})
+        if timezone.now() < sale.bidStartDate:
+            print(timezone.now())
+            print(sale.bidStartDate)
+            return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Esta Sale ainda não começou.'})
         if sale.isSold:
             return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'O artigo já foi vendido.'})
         if request.user.is_authenticated:

@@ -17,26 +17,26 @@
             {% csrf_token %}
             {{ form.as_p }}
 
-            <label for="title">Title:</label><br>
+            <label for="title">Título:</label><br>
             <input type="text" id="title" name="title"><br>
 
-            <label for="description">Description:</label><br>
+            <label for="description">Descrição:</label><br>
             <input type="text" id="description" name="description"><br>
 
-            <label for="initialAsk">Initial Ask:</label><br>
+            <label for="initialAsk">Valor Inicial:</label><br>
             <input type="number" id="initialAsk" name="initialAsk"><br>
 
-            <label for="bidStartDate">Bid Start Date:</label><br>
+            <label for="bidStartDate">Data Início:</label><br>
             <input type="datetime-local" id="bidStartDate" name="bidStartDate"><br>
 
-            <label for="bidEndDate">Bid End Date:</label><br>
+            <label for="bidEndDate">Data Fim:</label><br>
             <input type="datetime-local" id="bidEndDate" name="bidEndDate"><br>
 
             <div class="form-group">
-                <label for="image">Imagens:</label>
+                <label for="image">Imagem:</label>
                 <input type="file" id="image" name="multiuploader_file">
             </div>
-                <button type="submit">Guardar</button>
+            <button type="submit">Guardar</button>
         </form>
     </div>
 </div>
