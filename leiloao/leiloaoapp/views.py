@@ -15,7 +15,7 @@ from .models import Sale, AppUser
 # TODO: Adicionar Sales -> Falta por bonito
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Remover Sale
-# TODO: Ver Todos as Sales -> Por isto no INDEX.HTML
+# TODO: Ver Todos as Sales -> Por isto no INDEX.HTML -> ESCOLHER CAMPOS E POR BONITO
 # TODO: Fazer uma Bid -> Form
 # TODO: Ver Perfil
 # TODO: As Minhas Sales
@@ -34,7 +34,11 @@ def template(request):
 
 
 def index(request):
-    return render(request, 'leiloaoapp/index.html')
+    sales_list = Sale.objects.order_by('title')[:5]
+    context = {
+        'sales_list': sales_list
+    }
+    return render(request, 'leiloaoapp/index.html', context)
 
 
 def registar(request):
@@ -152,6 +156,7 @@ def remove_sale(request, sale_id):
 
 
 def getSales(request):
+    print('LKIUABSPIDUBAPSIUPAISOUBPASUBDPUASOBlkbjaçlskdjbs a jasil dçasj das da s a-s d-as d-as -da s-d asd')
     try:
         sales = Sale.objects.all()
         print(f"Number of sales: {len(sales)}")

@@ -14,7 +14,6 @@ urlpatterns = [
   path('mySale/', views.mySale, name='mySale'),
   path('myBid/', views.myBid, name='myBid'),
   path('perfil/', views.perfil, name='perfil'),
-  path('', views.getSales, name='getSales'),
-  #outros URLs aqui
+  path('index/', views.getSales, name='getSales'),
 
 ]

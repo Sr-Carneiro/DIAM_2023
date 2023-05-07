@@ -11,18 +11,15 @@
     <div class="centered">
         <h1>Bem-vindo ao Leiloao</h1>
         {% if user.is_authenticated %}
-        <p>Escolha uma das opções abaixo para continuar:</p>
-        <ul>
-            <li><a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a></li>
-            <li><a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a></li>
-            <li><a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a></li>
-            <li><a href="{% url 'leiloaoapp:perfil' %}">Perfil</a></li>
-        </ul>
+
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
         <br>
+        {% if sales_list %}
         <p>Sales Atuais</p>
+        <form action="{% url 'leiloaoapp:getSales' %}" method="get">
+        </form>
         <table>
             <thead>
             <tr>
@@ -32,7 +29,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for sale in sales %}
+            {% for sale in sales_list %}
             <tr>
                 <td>{{ sale.title|default:"N/A" }}</td>
                 <td>{{ sale.description|default:"N/A" }}</td>
@@ -45,6 +42,7 @@
             {% endfor %}
             </tbody>
         </table>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
