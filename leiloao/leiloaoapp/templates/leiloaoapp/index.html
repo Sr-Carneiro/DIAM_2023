@@ -11,7 +11,6 @@
     <div class="centered">
         <h1>Bem-vindo ao Leiloão</h1>
         {% if user.is_authenticated %}
-
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
@@ -32,7 +31,6 @@
             <tbody>
             {% for sale in sales_list %}
             <tr>
-
                 <td>
                     <a href="{% url 'leiloaoapp:detalhe' sale.id %}">
                         {{ sale.title|default:"N/A" }}</a>

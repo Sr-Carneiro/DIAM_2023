@@ -14,18 +14,20 @@ from .models import Sale, Bid, AppUser
 
 ## TODO: Login e Logout -> Falta por bonito
 # TODO: Registar -> Form -> Emanuel
-# TODO: Adicionar uma foto de utilizador ->
-# TODO: Adicionar Sales -> Falta por bonito
+# TODO: Adicionar uma foto de utilizador -> No Registar ou no Perfil?
+# TODO: Adicionar Sales -> POR BONITO
 # TODO: Adicionar uma foto a uma Sale
-# TODO: Remover Sale
-# TODO: Ver Todos as Sales -> Por isto no INDEX.HTML -> ESCOLHER CAMPOS E POR BONITO
-# TODO: Fazer uma Bid -> Form
+# TODO: Remover Sale -> DONE
+# TODO: Ver Todos as Sales -> POR BONITO
+# TODO: Fazer uma Bid (Form)
 # TODO: Ver Perfil
-# TODO: As Minhas Sales -> Por Bonito
+# TODO: As Minhas Sales -> identificar quais tiveram bids e quais não tiveram no final
 # TODO: As Minhas Bids
-# TODO: Zona de Administrador
-# TODO: Adicionar a minha Watchlist
-# TODO: Watchlist
+# TODO: Mostrar nas Minhas Bids, quais as que eu ganhei
+# TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale, desativar outros users. Ver lista de users.
+# TODO: Watchlist ->
+# TODO: Adicionar à minha Watchlist -> Detalhes
+# TODO: NICE-TO-HAVE: No Perfil ver
 
 
 
