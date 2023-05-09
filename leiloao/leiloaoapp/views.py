@@ -20,7 +20,6 @@ from .models import Sale, Bid, AppUser, WatchListLine
 # TODO: Mostrar a foto da Sale
 # TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale, desativar outros users. Ver lista de users.
 # TODO: Remover item da watchlist
-# TODO: Adicionar à minha Watchlist -> Detalhes
 
     # NICE TO HAVE -> Se der tempo
 # TODO: NICETOHAVE: Mostrar nas Minhas Bids, quais as que eu ganhei
@@ -37,6 +36,7 @@ from .models import Sale, Bid, AppUser, WatchListLine
 # TODO: Registar -> Form -> Emanuel -> POR BONITO
 # TODO: Ver Todos as Sales -> POR BONITO
 # TODO: Adicionar Sales -> POR BONITO
+# TODO: Adicionar à minha Watchlist DONE
 
     # DONE
 # TODO: Remover Sale -> DONE
@@ -307,4 +307,11 @@ def addToWatchlist(request, sale_id):
     watchlistline=WatchListLine.objects.create(sale=sale, appUser=apuser)
     watchlistline.save()
     return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
+
+def removeFromWatchlist(request, watchlistline_id):
+    line = WatchListLine.objects.get(id=watchlistline_id)
+    line.delete()
+    return redirect('leiloaoapp:watchlist')
+
+
 

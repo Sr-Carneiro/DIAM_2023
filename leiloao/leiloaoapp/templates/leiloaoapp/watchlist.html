@@ -26,11 +26,12 @@
                 <th>Colocada Por</th>
                 <th>Termina Em</th>
                 <th>Imagem</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             {% for item in watchlist %}
-            
+
             <tr>
                 <td>
                     <a href="{% url 'leiloaoapp:detalhe' item.sale.id %}">
@@ -41,6 +42,11 @@
 
                 <td>{{ item.sale.bidEndDate|default:" " }}</td>
                 <td>{{ item.sale.image_path|default:" " }}</td>
+                <td>
+                    <a href="{% url 'leiloaoapp:removeFromWatchlist' item.id %}">
+                        Remover
+                    </a>
+                </td>
             </tr>
             {% empty %}
             <tr>
