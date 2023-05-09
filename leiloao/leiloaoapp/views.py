@@ -307,3 +307,4 @@ def addToWatchlist(request, sale_id):
     watchlistline=WatchListLine.objects.create(sale=sale, appUser=apuser)
     watchlistline.save()
     return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
+
