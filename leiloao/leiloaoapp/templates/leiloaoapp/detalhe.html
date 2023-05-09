@@ -35,6 +35,7 @@
             {% endif %}
         </h2>
         {% if user.is_authenticated %}
+
         <form method="POST" action="{% url 'leiloaoapp:colocarBid' sale.id %}">
             {% csrf_token %}
             <label for="new_bid">Colocar Bid:</label>

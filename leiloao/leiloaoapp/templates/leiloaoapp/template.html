@@ -23,6 +23,7 @@
   <div class="up-center">
     <p>
       <a href="{% url 'leiloaoapp:index' %}">Início</a>
+
       {% if user.is_authenticated %}
       <a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a>
       <a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a>

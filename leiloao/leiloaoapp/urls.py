@@ -21,4 +21,5 @@ urlpatterns = [
   path('watchlist/', views.watchlist, name='watchlist'),
   path('addToWatchlist/<int:sale_id>/', views.addToWatchlist, name='addToWatchlist'),
 
+
 ]
