@@ -23,7 +23,8 @@
             <thead>
             <tr>
                 <th>Title</th>
-                <th>Current Bid</th>
+                <th>Bid Atual</th>
+                <th>Colocada Por</th>
                 <th>Termina Em</th>
                 <th>Imagem</th>
             </tr>
@@ -33,11 +34,13 @@
             <tr>
                 <td>
                     <a href="{% url 'leiloaoapp:detalhe' sale.id %}">
-                        {{ sale.title|default:"N/A" }}</a>
+                        {{ sale.title|default:" " }}</a>
                 </td>
-                <td>{{ sale.currentHighestBid|default:"N/A" }}</td>
-                <td>{{ sale.bidEndDate|default:"N/A" }}</td>
-                <td>{{ sale.image_path|default:"N/A" }}</td>
+                <td>{{ sale.currentHighestBid.value|default:"0" }}€</td>
+                <td>{{ sale.currentHighestBid.bidder.name }}</td>
+
+                <td>{{ sale.bidEndDate|default:" " }}</td>
+                <td>{{ sale.image_path|default:" " }}</td>
             </tr>
             {% empty %}
             <tr>

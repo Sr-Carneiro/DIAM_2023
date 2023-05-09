@@ -11,28 +11,37 @@ from django.core.checks import messages
 from django.contrib import messages
 from django.contrib.auth.models import User, Permission
 
-
-
-
 from .models import Sale, Bid, AppUser
 
-
-## TODO: Login e Logout -> Falta por bonito
-# TODO: Registar -> Form -> Emanuel
-# TODO: Adicionar uma foto de utilizador -> No Registar ou no Perfil?
-# TODO: Adicionar Sales -> POR BONITO
+    # FALTA FAZER
+# TODO: Mostrar foto de utilizador lá em cima do lado esquerdo, e no Perfil
+# TODO: Adicionar uma foto de utilizador -> Mudar do Registar para o Perfil?
 # TODO: Adicionar uma foto a uma Sale
-# TODO: Remover Sale -> DONE
-# TODO: Ver Todos as Sales -> POR BONITO
-# TODO: Fazer uma Bid (Form)
-# TODO: Ver Perfil
+# TODO: Mostrar a foto da Sale
 # TODO: As Minhas Sales -> identificar quais tiveram bids e quais não tiveram no final
 # TODO: As Minhas Bids
 # TODO: Mostrar nas Minhas Bids, quais as que eu ganhei
 # TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale, desativar outros users. Ver lista de users.
-# TODO: Watchlist ->
+# TODO: Watchlist -> novo HTML, view
 # TODO: Adicionar à minha Watchlist -> Detalhes
-# TODO: NICE-TO-HAVE: No Perfil ver
+
+    # NICE TO HAVE -> Se der tempo
+# TODO: NICETOHAVE: Pesquisa de Sales no Index
+# TODO: NICETOHAVE: Ordenar tabela de Sales no Index por coluna escolhida
+# TODO: NICETOHAVE:
+
+    # POR BONITO
+# TODO: Ver Perfil -> POR BONITO, ADICIONAR COISAS(Mostrar foto)
+# TODO: Login e Logout -> POR BONITO
+# TODO: Registar -> Form -> Emanuel -> POR BONITO
+# TODO: Ver Todos as Sales -> POR BONITO
+# TODO: Adicionar Sales -> POR BONITO
+
+    # DONE
+# TODO: Remover Sale -> DONE
+# TODO: Fazer uma Bid (Form) -> DONE(TESTAR)
+
+
 
 
 
@@ -47,9 +56,6 @@ def index(request):
     }
     return render(request, 'leiloaoapp/index.html', context)
 
-
-#def registar(request):
-    #return render(request, 'leiloaoapp/registar.html')
 
 def registar(request):
     if request.method == "GET":
@@ -86,24 +92,25 @@ def myBid(request):
     return render(request, 'leiloaoapp/myBid.html')
 
 
-def add_sale(request):
-    if request.method == 'POST':
-        form = SaleForm(request.POST)
-        if form.is_valid():
-            sale = form.save(commit=False)
-            sale.user = request.user
-            sale.save()
-
-            # Save uploaded images
-            multiuploader_image = MultiuploaderImage()
-            multiuploader_image.user_key = sale.pk  # Set user key as the sale's primary key
-            multiuploader_image.save(request)
-
-            return redirect('leiloaoapp:index')
-    else:
-        form = SaleForm()
-
-    return render(request, 'leiloaoapp/add_sale.html', {'form': form})
+# TODO VER SE ISTO VAI SER USADO
+# def add_sale(request):
+#     if request.method == 'POST':
+#         form = SaleForm(request.POST)
+#         if form.is_valid():
+#             sale = form.save(commit=False)
+#             sale.user = request.user
+#             sale.save()
+#
+#             # Save uploaded images
+#             multiuploader_image = MultiuploaderImage()
+#             multiuploader_image.user_key = sale.pk  # Set user key as the sale's primary key
+#             multiuploader_image.save(request)
+#
+#             return redirect('leiloaoapp:index')
+#     else:
+#         form = SaleForm()
+#
+#     return render(request, 'leiloaoapp/add_sale.html', {'form': form})
 
 def perfil(request):
     user = request.user
@@ -224,6 +231,7 @@ def detalhe(request, sale_id):
     minutes, seconds = divmod(seconds, 60)
     context = {
         'sale': sale,
+        ''
         'days_remaining': days,
         'hours_remaining': hours,
         'minutes_remaining': minutes,
@@ -263,7 +271,7 @@ def colocarBid(request, sale_id):
             sale.bidder = bidder
             sale.lastBidDate = timezone.now()
             sale.save()
-            return redirect('leilao:detalhe', sale_id=sale.id)
+            return redirect('leiloaoapp:detalhe', sale_id=sale.id)
         else:
             return redirect('login')
     else:

@@ -16,15 +16,15 @@
         <p>{{ sale.description }}</p>
         <p>Pedido Inicial: {{ sale.initialAsk }}€</p>
 
-        <p>Current highest bid:
+        <p>Bid Mais Alta:
             {% if sale.currentHighestBid %}
-            {{ sale.currentHighestBid }}
+            {{ sale.currentHighestBid.value }}€
             {% else %}
             Ainda não houve Bids
             {% endif %}
         </p>
 
-        <p>Bid Atual: {{ sale.currentHighestBid }}</p>
+        <p>Maior Bidder: {{ sale.currentHighestBid.bidder.name }}</p>
 
         {% if days_remaining > 0 or hours_remaining > 0 or minutes_remaining > 0 or seconds_remaining > 0 %}
         <h2>Restam: {{ days_remaining }} dias, {{ hours_remaining }} horas, {{ minutes_remaining }} minutos,
