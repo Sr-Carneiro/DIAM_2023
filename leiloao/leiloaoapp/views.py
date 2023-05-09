@@ -7,6 +7,11 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
+from django.core.checks import messages
+from django.contrib import messages
+from django.contrib.auth.models import User, Permission
+
+
 
 
 from .models import Sale, Bid, AppUser
@@ -43,8 +48,39 @@ def index(request):
     return render(request, 'leiloaoapp/index.html', context)
 
 
+#def registar(request):
+    #return render(request, 'leiloaoapp/registar.html')
+
 def registar(request):
-    return render(request, 'leiloaoapp/registar.html')
+    if request.method == "GET":
+        return render(request, 'leiloaoapp/registar.html')
+    else:
+        utilizador = request.POST['username']
+        palavra_passe = request.POST['password']
+        email = request.POST['email']
+        primeiro_nome = request.POST['primeiro_nome']
+        ultimo_nome = request.POST['ultimo_nome']
+
+        user = User.objects.create_user(
+            username=utilizador,
+            email=email,
+            password=palavra_passe,
+            first_name=primeiro_nome,
+            last_name=ultimo_nome
+        )
+        appuser = AppUser.objects.create(user=user, name=utilizador, email=email,image_path='static/media/default_user_img.png')
+        appuser.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Utilizador criado com sucesso')
+
+        # authenticate user and login
+        user = authenticate(request, username=utilizador, password=palavra_passe)
+        if user is not None:
+            login(request, user)
+            return render(request, 'leiloaoapp/login_view.html')
+        else:
+            return redirect('login_view')
+
 
 def myBid(request):
     return render(request, 'leiloaoapp/myBid.html')
