@@ -9,9 +9,8 @@
 {% block content %}
 <div class="container">
     <div class="centered">
-        <h1>Minhas Sales</h1>
+        <h1>As Minhas Sales</h1>
         {% if user.is_authenticated %}
-
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
@@ -31,14 +30,14 @@
             <tbody>
             {% for sale in sales_list %}
             <tr>
-
                 <td>
                     <a href="{% url 'leiloaoapp:detalhe' sale.id %}">
-                        {{ sale.title|default:"N/A" }}</a>
+                        {{ sale.title|default:" " }}
+                    </a>
                 </td>
-                <td>{{ sale.currentHighestBid|default:"N/A" }}</td>
-                <td>{{ sale.bidEndDate|default:"N/A" }}</td>
-                <td>{{ sale.image_path|default:"N/A" }}</td>
+                <td>{{ sale.currentHighestBid|default:"0" }}€</td>
+                <td>{{ sale.bidEndDate|default:" " }}</td>
+                <td>{{ sale.image_path|default:" " }}</td>
             </tr>
             {% empty %}
             <tr>

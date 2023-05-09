@@ -3,47 +3,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Leiloao - Minhas Bids</title>
+    <title>Leiloao - Watchlist</title>
 </head>
 <body>
 {% block content %}
 <div class="container">
     <div class="centered">
-        <h1>As Minhas Bids</h1>
+        <h1>A Minha Watchlist</h1>
         {% if user.is_authenticated %}
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
         <br>
-        {% if bid_list %}
-        <form action="{% url 'leiloaoapp:myBid' %}" method="get">
+        {% if watchlist %}
+        <form action="{% url 'leiloaoapp:watchlist' %}" method="get">
         </form>
         <table>
             <thead>
             <tr>
-                <th>Title</th>
+                <th>Título</th>
                 <th>Bid Atual</th>
-                <th>Seller</th>
+                <th>Colocada Por</th>
                 <th>Termina Em</th>
                 <th>Imagem</th>
             </tr>
             </thead>
             <tbody>
-            {% for bid in bid_list %}
+            {% for item in watchlist %}
             <tr>
                 <td>
-                    <a href="{% url 'leiloaoapp:detalhe' bid.id %}">
-                        {{ bid.sale.title|default:"" }}
-                    </a>
+                    <a href="{% url 'leiloaoapp:detalhe' item.sale.id %}">
+                        {{ item.sale.title|default:" " }}</a>
                 </td>
-                <td>{{ bid.value|default:"0" }}€</td>
-                <td>{{ bid.sale.seller.name }}</td>
-                <td>{{ bid.sale.bidEndDate|default:"" }}</td>
-                <td>{{ bid.sale.image_path|default:"" }}</td>
+                <td>{{ item.sale.currentHighestBid.value|default:"0" }}€</td>
+                <td>{{ item.sale.currentHighestBid.bidder.name }}</td>
+
+                <td>{{ item.sale.bidEndDate|default:" " }}</td>
+                <td>{{ item.sale.image_path|default:" " }}</td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3">Não foram encontradas Bids.</td>
+                <td colspan="3">Não foram encontradas Sales.</td>
             </tr>
             {% endfor %}
             </tbody>
