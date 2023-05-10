@@ -11,13 +11,13 @@
 <div class="container">
   <div class="top-left">
     <h3>Bem-vindo(a)</h3>
-    <div class="userimage">
-      {% if user.is_authenticated %}
-      <img src="{{ MEDIA_URL }}{{ appuser.image_path }}" alt="">
-      {% else %}
-      <img src="{% static 'leiloaoapp/images/73-730482_existing-user-default-avatar.png' %}" alt="">
+    {% if user.is_authenticated %}
+      {% if user.appuser.image_path %}
+        <div class="userimage">
+          <img src="{{ MEDIA_URL }}{{ user.appuser.image_path }}" alt="">
+        </div>
       {% endif %}
-    </div>
+    {% endif %}
     <span class="username">{{ user.appuser.name }}</span>
   </div>
   <div class="up-center">
@@ -48,8 +48,10 @@
     {% endif %}
   </div>
   <div class="bottom-right">
+    <p>Leilão online</p>
     <p>DIAM - ISCTE</p>
   </div>
 </div>
 </body>
 </html>
+

@@ -1,21 +1,14 @@
-<!DOCTYPE html>
 {% extends "leiloaoapp/template.html" %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Leiloao</title>
-</head>
-<body>
+
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <h1>{{ user.username }}</h1>
-            <p>Nome completo: {{ user.profile.nome_completo }}</p>
-            <p>E-mail: {{ user.email }}</p>
-        </div>
-    </div>
-</div>
+  <div class="centered">
+    <h2>Perfil de {{ user.username }}</h2>
+    <img src="{{ MEDIA_URL }}{{ user.appuser.image_path }}" style="max-width: 5cm; max-height: 4.5cm;">
+    <br>
+    <p><strong>Nome:</strong> {{ user.appuser.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Data de criação:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+  </div>
 {% endblock %}
-</body>
-</html>
+
+

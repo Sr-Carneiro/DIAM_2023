@@ -9,7 +9,7 @@
 {% block content %}
 <div class="container">
     <div class="centered">
-        <form action="{%url 'leiloaoapp:registar' %}" method="POST">
+       <form action="{% url 'leiloaoapp:registar' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <label>
                 <h6>Utilizador</h6>
@@ -30,15 +30,24 @@
                     <h6>Ultimo Nome</h6>
                     <input type="text" name="ultimo_nome">
                 </label>
+                <label>
+                    <h6>Imagem (16:9)</h6>
+                    <input type="file" name="imagem" accept="image/*">
+                </label>
                 <br>
                 <button type="submit"> Registar</button>
             </label>
         </form>
+        <form method="POST" action="{% url 'leiloaoapp:registar' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+    </form>
     </div>
 </div>
 {% endblock %}
 </body>
 </html>
+
 
 
 

@@ -1,7 +1,11 @@
 
 from datetime import datetime, timedelta
 from sqlite3 import OperationalError
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.models import User
+from .models import AppUser
 from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -54,6 +58,9 @@ def index(request):
     }
     return render(request, 'leiloaoapp/index.html', context)
 
+def perfil(request):
+    return render(request, 'leiloaoapp/perfil.html')
+
 
 def registar(request):
     if request.method == "GET":
@@ -64,6 +71,11 @@ def registar(request):
         email = request.POST['email']
         primeiro_nome = request.POST['primeiro_nome']
         ultimo_nome = request.POST['ultimo_nome']
+        image = request.FILES.get('image', None)  # Obter o arquivo de imagem (se existir)
+
+        # Check if the user already exists
+        if User.objects.filter(username=utilizador).exists():
+            return render(request, 'leiloaoapp/erro.html')
 
         user = User.objects.create_user(
             username=utilizador,
@@ -72,7 +84,21 @@ def registar(request):
             first_name=primeiro_nome,
             last_name=ultimo_nome
         )
-        appuser = AppUser.objects.create(user=user, name=utilizador, email=email,image_path='static/media/default_user_img.png')
+        appuser = AppUser.objects.create(user=user, name=utilizador, email=email)
+
+        if image:  # Se a imagem existir
+            # Salvar a imagem no diretório de mídia
+            filename = default_storage.save('images/{}'.format(image.name), image)
+            # Definir o caminho da imagem no modelo AppUser
+            appuser.image = filename
+
+            # Redimensionar a imagem e salvá-la no mesmo caminho
+            filepath = 'media/{}'.format(filename)
+            with Image.open(filepath) as img:
+                tamanho = (300, 300)  # Novo tamanho da imagem
+                img = img.resize(tamanho)
+                img.save(filepath)
+
         appuser.save()
 
         messages.add_message(request, messages.SUCCESS, 'Utilizador criado com sucesso')
@@ -81,10 +107,9 @@ def registar(request):
         user = authenticate(request, username=utilizador, password=palavra_passe)
         if user is not None:
             login(request, user)
-            return render(request, 'leiloaoapp/login_view.html')
+            return redirect('leiloaoapp:perfil')  # redireciona para a URL nomeada 'perfil'
         else:
-            return redirect('login_view')
-
+            return redirect('index')
 
 # TODO VER SE ISTO VAI SER USADO
 # def add_sale(request):
@@ -247,7 +272,6 @@ def detalhe(request, sale_id):
     minutes, seconds = divmod(seconds, 60)
     context = {
         'sale': sale,
-        ''
         'days_remaining': days,
         'hours_remaining': hours,
         'minutes_remaining': minutes,
