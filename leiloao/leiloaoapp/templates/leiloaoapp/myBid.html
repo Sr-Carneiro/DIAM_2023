@@ -16,16 +16,13 @@
         {% endif %}
         <br>
         {% if bid_list %}
-        <form action="{% url 'leiloaoapp:myBid' %}" method="post">
-            {% csrf_token %}
+        <ul>
             {% for bid in bid_list %}
-            <input type="hidden" name="bid_id" value="{{ bid.id }}">
-            <label for="bid_value_{{ bid.id }}">Title: {{ bid.sale.title }}</label>
-            <input type="number" id="bid_value_{{ bid.id }}" name="bid_value_{{ bid.id }}" placeholder="Insira o valor da bid">
-            <br>
+            <li>{{ bid.sale.title }} - Valor: {{ bid.value }}</li>
             {% endfor %}
-            <button type="submit">Guardar Bids</button>
-        </form>
+        </ul>
+        {% else %}
+        <p>Não há nenhuma bid disponível.</p>
         {% endif %}
     </div>
 </div>
