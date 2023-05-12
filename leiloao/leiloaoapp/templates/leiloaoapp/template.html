@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Leiloao</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% load static %}
-  <link rel="stylesheet" type="text/css" href="{% static 'leiloaoapp/style.css' %}">
+    <title>Leiloao</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'leiloaoapp/style.css' %}">
 </head>
 <body>
 <div class="container">
-  <div class="top-left">
-    <h3>Bem-vindo(a)</h3>
-    {% if user.is_authenticated %}
-      {% if user.appuser.image_path %}
+    <div class="top-left">
+        <h3>Bem-vindo(a)</h3>
+        {% if user.is_authenticated %}
+        {% if user.appuser.image_path %}
         <div class="userimage">
-          <img src="{{ MEDIA_URL }}{{ user.appuser.image_path }}" alt="">
+            <img src="{{ MEDIA_URL }}{{ user.appuser.image_path }}" alt="">
         </div>
-      {% endif %}
-    {% endif %}
-    <span class="username">{{ user.appuser.name }}</span>
-  </div>
-  <div class="up-center">
-    <p>
-      <a href="{% url 'leiloaoapp:index' %}">Início</a>
+        {% endif %}
+        {% endif %}
+        <span class="username">{{ user.appuser.name }}</span>
+    </div>
+    <div class="up-center">
+        <p>
+            <a href="{% url 'leiloaoapp:index' %}">Início</a>
 
-      {% if user.is_authenticated %}
-      <a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a>
-      <a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a>
-      <a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a>
-      <a href="{% url 'leiloaoapp:watchlist' %}">Watchlist</a>
-      <a href="{% url 'leiloaoapp:perfil' %}">Perfil</a>
-      {% else %}
-      <a href="{% url 'leiloaoapp:registar' %}">Registar</a>
-      {% endif %}
-    </p>
-  </div>
-  {% block content %}
-  <div class="centered">
-    <p>Zona que vai ser diferente em todas as páginas, o resto mantém-se igual</p>
-  {% endblock %}
-  </div>
-  <div class="top-right">
-    {% if user.is_authenticated %}
-      <a href="{% url 'leiloaoapp:logout_view' %}">Logout</a>
-    {% else %}
-      <a href="{% url 'leiloaoapp:login_view' %}">Login</a>
-    {% endif %}
-  </div>
-  <div class="bottom-right">
-    <p>Leilão online</p>
-    <p>DIAM - ISCTE</p>
-  </div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'leiloaoapp:myBid' %}">Minhas Bids</a>
+            <a href="{% url 'leiloaoapp:mySale' %}">Minhas Sales</a>
+            <a href="{% url 'leiloaoapp:adicionarSale' %}">Adicionar Sales</a>
+            <a href="{% url 'leiloaoapp:watchlist' %}">Watchlist</a>
+            <a href="{% url 'leiloaoapp:perfil' %}">Perfil</a>
+            {% if user.is_superuser %}
+            <a href="{% url 'leiloaoapp:userManagement' %}">Gestão de Utilizadores</a>
+            {% endif %}
+            {% else %}
+            <a href="{% url 'leiloaoapp:registar' %}">Registar</a>
+
+            {% endif %}
+        </p>
+    </div>
+    {% block content %}
+    <div class="centered">
+        <p>Zona que vai ser diferente em todas as páginas, o resto mantém-se igual</p>
+        {% endblock %}
+    </div>
+    <div class="top-right">
+        {% if user.is_authenticated %}
+        <a href="{% url 'leiloaoapp:logout_view' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'leiloaoapp:login_view' %}">Login</a>
+        {% endif %}
+    </div>
+    <div class="bottom-right">
+        <p>Leilão online</p>
+        <p>DIAM - ISCTE</p>
+    </div>
 </div>
+{% load static %}
+<script src="{% static 'leiloaoapp/js/earthtones.js' %}"></script>
 </body>
 </html>
 

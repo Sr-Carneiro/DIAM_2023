@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends "leiloaoapp/template.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leiloao - Índice</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="centered">
+        {% if user.is_authenticated %}
+        {% else %}
+        <p>Faça Login ou registe-se para começar</p>
+        {% endif %}
+        {% if user.is_superuser %}
+        <h1>Gestão de Utilizadores</h1>
+        {% if user_list %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Imagem</th>
+                <th>Ativo</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in user_list %}
+            <tr>
+                <td>{{user.id|default:"-"}}</td>
+                <td>{{user.name|default:"-"}}</td>
+                <td>{{user.email|default:"-"}}</td>
+                <td>{{user.image_path|default:"-"}}</td>
+                <td>{% if user.active %}<a href="{% url 'leiloaoapp:deactivateUser' user.id %}">✔️</a>
+                    {% else %}<a href="{% url 'leiloaoapp:activateUser' user.id %}">❌</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            empty
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Não foram encontrados Utilizadores.</p>
+        {% endif %}
+        {% else %}
+        <h1>Não permitido!</h1>
+        {% endif %}
+        <br>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'leiloaoapp'
 urlpatterns = [
-    path("", views.template, name="template"),
+    path("", views.index, name="index"),
     path('index/', views.index, name="index"),
     path('myBid/', views.myBid, name='myBid'),
     path('perfil/', views.perfil, name='perfil'),
@@ -20,4 +20,8 @@ urlpatterns = [
     path('remove-sale/<int:sale_id>/', views.remove_sale, name='remove_sale'),
     path('addToWatchlist/<int:sale_id>/', views.addToWatchlist, name='addToWatchlist'),
     path('removeFromWatchlist/<int:watchlistline_id>/', views.removeFromWatchlist, name='removeFromWatchlist'),
+    path('userManagement/', views.userManagement, name='userManagement'),
+    path('deactivateUser/<int:id>', views.deactivateUser, name='deactivateUser'),
+    path('activateUser/<int:id>', views.activateUser, name='activateUser'),
+
 ]

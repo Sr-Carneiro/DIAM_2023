@@ -14,6 +14,7 @@ class AppUser(models.Model):
     email = models.CharField(max_length=200)
     #TODO: Caminho do image_path
     image_path = models.CharField(max_length=255, default='.png', null=True)
+    active = models.BooleanField('active', default=True)
 
     def __str__(self):
         return self.name

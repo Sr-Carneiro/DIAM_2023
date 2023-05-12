@@ -1,6 +1,7 @@
-
 from datetime import datetime, timedelta
 from sqlite3 import OperationalError
+from tkinter import Image
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -17,22 +18,23 @@ from django.contrib.auth.models import User, Permission
 
 from .models import Sale, Bid, AppUser, WatchListLine
 
-    # FALTA FAZER
+
+# FALTA FAZER
 # TODO: Mostrar foto de utilizador lá em cima do lado esquerdo, e no Perfil
 # TODO: Adicionar uma foto de utilizador -> Mudar do Registar para o Perfil?
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Mostrar a foto da Sale
-# TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale, desativar outros users. Ver lista de users.
-# TODO: Remover item da watchlist
+# TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale
 
-    # NICE TO HAVE -> Se der tempo
+# NICE TO HAVE -> Se der tempo
 # TODO: NICETOHAVE: Mostrar nas Minhas Bids, quais as que eu ganhei
 # TODO: NICETOHAVE: As Minhas Sales -> identificar quais tiveram bids e quais não tiveram no final
 # TODO: NICETOHAVE: Pesquisa de Sales no Index
 # TODO: NICETOHAVE: Ordenar tabela de Sales no Index por coluna escolhida
 # TODO: NICETOHAVE:
 
-    # POR BONITO
+# POR BONITO
+# TODO: Remover item da watchlist
 # TODO: Watchlist -> POR BONITO
 # TODO: As Minhas Bids -> POR BONITO
 # TODO: Ver Perfil -> POR BONITO, ADICIONAR COISAS(Mostrar foto)
@@ -42,7 +44,8 @@ from .models import Sale, Bid, AppUser, WatchListLine
 # TODO: Adicionar Sales -> POR BONITO
 # TODO: Adicionar à minha Watchlist DONE
 
-    # DONE
+# DONE
+# TODO: Zona de Administrador -> desativar outros users. Ver lista de users.
 # TODO: Remover Sale -> DONE
 # TODO: Fazer uma Bid (Form) -> DONE(TESTAR)
 
@@ -57,6 +60,7 @@ def index(request):
         'sales_list': sales_list
     }
     return render(request, 'leiloaoapp/index.html', context)
+
 
 def perfil(request):
     return render(request, 'leiloaoapp/perfil.html')
@@ -111,26 +115,6 @@ def registar(request):
         else:
             return redirect('index')
 
-# TODO VER SE ISTO VAI SER USADO
-# def add_sale(request):
-#     if request.method == 'POST':
-#         form = SaleForm(request.POST)
-#         if form.is_valid():
-#             sale = form.save(commit=False)
-#             sale.user = request.user
-#             sale.save()
-#
-#             # Save uploaded images
-#             multiuploader_image = MultiuploaderImage()
-#             multiuploader_image.user_key = sale.pk  # Set user key as the sale's primary key
-#             multiuploader_image.save(request)
-#
-#             return redirect('leiloaoapp:index')
-#     else:
-#         form = SaleForm()
-#
-#     return render(request, 'leiloaoapp/add_sale.html', {'form': form})
-
 
 def perfil(request):
     user = request.user
@@ -184,9 +168,8 @@ def logout_view(request):
 
 def adicionarSale(request, timezone=None):
     if not request.user.is_authenticated:
-        # TODO: mudar isto para ir para uma página de erro genérica
         return render(request, 'leiloaoapp/adicionarSale.html',
-                  { 'error_message': 'Tem de fazer Login para criar Sales.'})
+                      {'error_message': 'Faça Login para criar Sales.'})
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -226,12 +209,12 @@ def remove_sale(request, sale_id):
         return render(request, 'leiloaoapp/detalhe.html',
                       {'sale': sale, 'error_message': 'Tem de fazer Login para interagir com as Sale.'})
 
-
     if sale.seller != request.user.appuser:
         return render(request, 'leiloaoapp/detalhe.html',
                       {'sale': sale, 'error_message': 'Não pode cancelar Sales de outro Seller.'})
 
     sale.bidEndDate = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    sale.isSold = False
     sale.save()
 
     return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
@@ -285,26 +268,33 @@ def colocarBid(request, sale_id):
     if request.method == 'POST':
         value = request.POST['new_bid']
         if not value:
-            return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Por favor insira um valor.'})
+            return render(request, 'leiloaoapp/detalhe.html',
+                          {'sale': sale, 'error_message': 'Por favor insira um valor.'})
+        if sale.isSold:
+            return render(request, 'leiloaoapp/detalhe.html',
+                          {'sale': sale, 'error_message': 'O artigo já foi vendido.'})
         value = float(value)
         if value <= sale.initialAsk:
-            return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'O valor do Bid deve ser maior que o preço inicial.'})
+            return render(request, 'leiloaoapp/detalhe.html',
+                          {'sale': sale, 'error_message': 'O valor do Bid deve ser maior que o preço inicial.'})
         if timezone.now() > sale.bidEndDate:
             return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Esta Sale já terminou.'})
         if timezone.now() < sale.bidStartDate:
             print(timezone.now())
             print(sale.bidStartDate)
-            return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Esta Sale ainda não começou.'})
-        if sale.isSold:
-            return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'O artigo já foi vendido.'})
+            return render(request, 'leiloaoapp/detalhe.html',
+                          {'sale': sale, 'error_message': 'Esta Sale ainda não começou.'})
         if request.user.is_authenticated:
             bidder = request.user.appuser
             if not bidder:
-                return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Deve registar-se para colocar Bids.'})
+                return render(request, 'leiloaoapp/detalhe.html',
+                              {'sale': sale, 'error_message': 'Deve registar-se para colocar Bids.'})
             if bidder == sale.seller:
-                return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Não pode colocar Bids nas suas próprias Sales.'})
+                return render(request, 'leiloaoapp/detalhe.html',
+                              {'sale': sale, 'error_message': 'Não pode colocar Bids nas suas próprias Sales.'})
             if sale.currentHighestBid and value <= sale.currentHighestBid.value:
-                return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'O valor da sua Bid deve ser maior do que a Bid mais alta.'})
+                return render(request, 'leiloaoapp/detalhe.html', {'sale': sale,
+                                                                   'error_message': 'O valor da sua Bid deve ser maior do que a Bid mais alta.'})
 
             bid = Bid.objects.create(value=value, bidder=bidder, sale=sale)
             sale.currentHighestBid = bid
@@ -317,6 +307,7 @@ def colocarBid(request, sale_id):
     else:
         return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
 
+
 def watchlist(request):
     apuser = request.user.appuser
     watchlist = WatchListLine.objects.filter(appUser=apuser)
@@ -325,12 +316,14 @@ def watchlist(request):
     }
     return render(request, 'leiloaoapp/watchlist.html', context)
 
+
 def addToWatchlist(request, sale_id):
-    apuser=request.user.appuser
+    apuser = request.user.appuser
     sale = Sale.objects.get(id=sale_id)
-    watchlistline=WatchListLine.objects.create(sale=sale, appUser=apuser)
+    watchlistline = WatchListLine.objects.create(sale=sale, appUser=apuser)
     watchlistline.save()
     return render(request, 'leiloaoapp/detalhe.html', {'sale': sale})
+
 
 def removeFromWatchlist(request, watchlistline_id):
     line = WatchListLine.objects.get(id=watchlistline_id)
@@ -338,4 +331,20 @@ def removeFromWatchlist(request, watchlistline_id):
     return redirect('leiloaoapp:watchlist')
 
 
+def userManagement(request):
+    apuser = request.user.appuser
+    user_list = AppUser.objects.all().values()
+    return render(request, 'leiloaoapp/userManagement.html', {'user_list': user_list})
 
+def deactivateUser(request, id):
+    user = AppUser.objects.get(id=id)
+    user.active = False
+    user.save()
+    return render(request, 'leiloaoapp/userManagement.html', {'user_list': AppUser.objects.all().values()})
+
+
+def activateUser(request, id):
+    user = AppUser.objects.get(id=id)
+    user.active = True
+    user.save()
+    return render(request, 'leiloaoapp/userManagement.html', {'user_list': AppUser.objects.all().values()})
