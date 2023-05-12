@@ -39,8 +39,7 @@
                         {{ sale.title|default:" " }}</a>
                 </td>
                 <td>{{ sale.currentHighestBid.value|default:"0" }}€</td>
-                <td>{{ sale.currentHighestBid.bidder.name }}</td>
-
+                <td>{{ sale.seller.name }}</td>
                 <td>{{ sale.bidEndDate|default:" " }}</td>
                 <td>{{ sale.image_path|default:" " }}</td>
                 {% if user.is_superuser %}

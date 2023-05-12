@@ -10,7 +10,7 @@
 <div class="container">
     <div class="centered">
         <h1>A Minha Watchlist</h1>
-        {% if user.is_authenticated %}
+        {% if request.user.is_authenticated and request.user.appuser %}
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
         {% endif %}
@@ -38,7 +38,7 @@
                         {{ item.sale.title|default:" " }}</a>
                 </td>
                 <td>{{ item.sale.currentHighestBid.value|default:"0" }}€</td>
-                <td>{{ item.sale.currentHighestBid.bidder.name }}</td>
+                <td>{{ item.sale.currentHighestBid.bidder.name|default:" " }}</td>
 
                 <td>{{ item.sale.bidEndDate|default:" " }}</td>
                 <td>{{ item.sale.image_path|default:" " }}</td>

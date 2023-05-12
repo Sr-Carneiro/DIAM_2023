@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from sqlite3 import OperationalError
-from tkinter import Image
+
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login

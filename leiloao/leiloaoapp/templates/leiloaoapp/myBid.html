@@ -13,42 +13,19 @@
         {% if user.is_authenticated %}
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
-
         {% endif %}
         <br>
         {% if bid_list %}
-        <form action="{% url 'leiloaoapp:myBid' %}" method="get">
-        </form>
-        <table>
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Bid Atual</th>
-                <th>Seller</th>
-                <th>Termina Em</th>
-                <th>Imagem</th>
-            </tr>
-            </thead>
-            <tbody>
+        <form action="{% url 'leiloaoapp:myBid' %}" method="post">
+            {% csrf_token %}
             {% for bid in bid_list %}
-            <tr>
-                <td>
-                    <a href="{% url 'leiloaoapp:detalhe' bid.id %}">
-                        {{ bid.sale.title|default:"" }}
-                    </a>
-                </td>
-                <td>{{ bid.value|default:"0" }}€</td>
-                <td>{{ bid.sale.seller.name }}</td>
-                <td>{{ bid.sale.bidEndDate|default:"" }}</td>
-                <td>{{ bid.sale.image_path|default:"" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3">Não foram encontradas Bids.</td>
-            </tr>
+            <input type="hidden" name="bid_id" value="{{ bid.id }}">
+            <label for="bid_value_{{ bid.id }}">Title: {{ bid.sale.title }}</label>
+            <input type="number" id="bid_value_{{ bid.id }}" name="bid_value_{{ bid.id }}" placeholder="Insira o valor da bid">
+            <br>
             {% endfor %}
-            </tbody>
-        </table>
+            <button type="submit">Guardar Bids</button>
+        </form>
         {% endif %}
     </div>
 </div>
