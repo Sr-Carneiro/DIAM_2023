@@ -13,41 +13,57 @@
         {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-<form action="{% url 'leiloaoapp:adicionarSale' %}" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
+        <form id="myForm" action="{% url 'leiloaoapp:adicionarSale' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-  <div class="form-group">
-    <label for="title">Título:</label>
-    <input type="text" class="form-control" id="title" name="title" placeholder="Insira o título da venda">
-  </div>
+            <div class="form-group">
+                <label for="title">Título:</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Insira o título da venda"
+                       required>
+            </div>
 
-  <div class="form-group">
-    <label for="description">Descrição:</label>
-    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Insira a descrição da venda"></textarea>
-  </div>
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <textarea class="form-control" id="description" name="description" rows="3"
+                          placeholder="Insira a descrição da venda" required></textarea>
+            </div>
 
-  <div class="form-group">
-    <label for="initialAsk">Valor Inicial:</label>
-    <input type="number" class="form-control" id="initialAsk" name="initialAsk" placeholder="Insira o valor inicial da venda">
-  </div>
+            <div class="form-group">
+                <label for="initialAsk">Valor Inicial:</label>
+                <input type="number" class="form-control" id="initialAsk" name="initialAsk"
+                       placeholder="Insira o valor inicial da venda" required>
+            </div>
 
-  <div class="form-group">
-    <label for="bidStartDate">Data Início:</label>
-    <input type="datetime-local" class="form-control" id="bidStartDate" name="bidStartDate">
-  </div>
+            <div class="form-group">
+                <label for="bidStartDate">Data Início:</label>
+                <input type="datetime-local" class="form-control" id="bidStartDate" name="bidStartDate" required>
+            </div>
 
-  <div class="form-group">
-    <label for="bidEndDate">Data Fim:</label>
-    <input type="datetime-local" class="form-control" id="bidEndDate" name="bidEndDate">
-  </div>
+            <div class="form-group">
+                <label for="bidEndDate">Data Fim:</label>
+                <input type="datetime-local" class="form-control" id="bidEndDate" name="bidEndDate" required>
+            </div>
 
-  <div class="form-group">
-    <label for="image">Imagem:</label>
-    <input type="file" id="image" name="image">
-  </div>
+            <div class="form-group">
+                <label for="image">Imagem:</label>
+                <input type="file" id="image" name="image">
+            </div>
 
-  <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
+            <button type="submit" class="btn btn-primary" disabled>Guardar</button>
+        </form>
+
+        <script>
+            const form = document.getElementById('myForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            form.addEventListener('input', () => {
+                const fields = form.querySelectorAll('input[required], textarea[required]');
+                const isFilled = [...fields].every(field => field.value.trim() !== '');
+
+                submitButton.disabled = !isFilled;
+            });
+        </script>
+
     </div>
 </div>
 {% endblock %}

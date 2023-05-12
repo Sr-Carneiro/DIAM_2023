@@ -20,11 +20,11 @@ from .models import Sale, Bid, AppUser, WatchListLine
 
 
 # FALTA FAZER
+# TODO: POR BONITO!
 # TODO: Mostrar foto de utilizador lá em cima do lado esquerdo, e no Perfil
 # TODO: Adicionar uma foto de utilizador -> Mudar do Registar para o Perfil?
 # TODO: Adicionar uma foto a uma Sale
 # TODO: Mostrar a foto da Sale
-# TODO: Zona de Administrador -> SuperUsers podem remover qualquer Sale
 
 # NICE TO HAVE -> Se der tempo
 # TODO: NICETOHAVE: Mostrar nas Minhas Bids, quais as que eu ganhei
@@ -42,6 +42,8 @@ from .models import Sale, Bid, AppUser, WatchListLine
 # TODO: Registar -> Form -> Emanuel -> POR BONITO
 # TODO: Ver Todos as Sales -> POR BONITO
 # TODO: Adicionar Sales -> POR BONITO
+# TODO: Controlos de users ativos/inativos DONE
+# TODO: SuperUsers podem remover qualquer Sale DONE
 # TODO: Adicionar à minha Watchlist DONE
 
 # DONE
@@ -62,8 +64,8 @@ def index(request):
     return render(request, 'leiloaoapp/index.html', context)
 
 
-def perfil(request):
-    return render(request, 'leiloaoapp/perfil.html')
+# def perfil(request):
+#     return render(request, 'leiloaoapp/perfil.html')
 
 
 def registar(request):
@@ -170,6 +172,9 @@ def adicionarSale(request, timezone=None):
     if not request.user.is_authenticated:
         return render(request, 'leiloaoapp/adicionarSale.html',
                       {'error_message': 'Faça Login para criar Sales.'})
+    if not request.user.appuser.active:
+        return render(request, 'leiloaoapp/adicionarSale.html', {'error_message': 'A sua conta está inativa! Não pode adicionar Sales'})
+
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
@@ -207,9 +212,18 @@ def remove_sale(request, sale_id):
 
     if not request.user.is_authenticated:
         return render(request, 'leiloaoapp/detalhe.html',
-                      {'sale': sale, 'error_message': 'Tem de fazer Login para interagir com as Sale.'})
+                      {'sale': sale, 'error_message': 'Tem de fazer Login para interagir com as Sales.'})
 
-    if sale.seller != request.user.appuser:
+    if not request.user.appuser.active:
+        return render(request, 'leiloaoapp/detalhe.html',
+                      {'sale': sale, 'error_message': 'A sua conta está inativa! Não pode remover Sales.'})
+
+    if request.user.is_superuser:
+        sale.bidEndDate = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        sale.isSold = False
+        sale.save()
+
+    elif sale.seller != request.user.appuser:
         return render(request, 'leiloaoapp/detalhe.html',
                       {'sale': sale, 'error_message': 'Não pode cancelar Sales de outro Seller.'})
 
@@ -265,6 +279,9 @@ def detalhe(request, sale_id):
 
 def colocarBid(request, sale_id):
     sale = get_object_or_404(Sale, pk=sale_id)
+    if request.user.appuser.active == False:
+        return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'A sua conta está inativa! Não pode colocar Bids.'})
+
     if request.method == 'POST':
         value = request.POST['new_bid']
         if not value:
@@ -335,6 +352,7 @@ def userManagement(request):
     apuser = request.user.appuser
     user_list = AppUser.objects.all().values()
     return render(request, 'leiloaoapp/userManagement.html', {'user_list': user_list})
+
 
 def deactivateUser(request, id):
     user = AppUser.objects.get(id=id)

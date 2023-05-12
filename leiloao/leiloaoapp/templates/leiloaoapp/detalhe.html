@@ -12,7 +12,9 @@
         {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
         {% endif %}
-        <h1>Sale: "{{ sale.title }}"</h1>
+        <h1>Sale: "<a href="{% url 'leiloaoapp:detalhe' sale.id %}">
+                        {{ sale.title|default:" " }}</a>"
+        </h1>
         <p>{{ sale.description }}</p>
         <p>Pedido Inicial: {{ sale.initialAsk }}€</p>
 
@@ -44,6 +46,12 @@
         </form>
         <br>
         {% if request.user.appuser == sale.seller %}
+        <form method="POST" action="{% url 'leiloaoapp:remove_sale' sale.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Cancelar Sale">
+        </form>
+        {% endif %}
+         {% if request.user.is_superuser %}
         <form method="POST" action="{% url 'leiloaoapp:remove_sale' sale.id %}">
             {% csrf_token %}
             <input type="submit" value="Cancelar Sale">

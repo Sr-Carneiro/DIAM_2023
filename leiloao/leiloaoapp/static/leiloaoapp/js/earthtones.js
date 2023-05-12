@@ -1,5 +1,5 @@
 function backgroundAnimation() {
-  const colors = ["#A67C5B", "#DFC8B4",'#ac8a64','#c9b18c','#d8c2a3','#e3d3ba']; // earth tones colors
+  const colors = ['#e3d3ba','#A67C5B', '#DFC8B4','#ac8a64','#c9b18c','#d8c2a3']; // earth tones colors
   let colorIndex = 0;
   let intervalId;
 
