@@ -15,7 +15,18 @@
         <h1>Sale: "<a href="{% url 'leiloaoapp:detalhe' sale.id %}">
                         {{ sale.title|default:" " }}</a>"
         </h1>
+        <p>
+        <img src="{{ sale.image_path.url }}" alt="No Image">
+        </p>
         <p>{{ sale.description }}</p>
+        {% if days_remaining > 0 or hours_remaining > 0 or minutes_remaining > 0 or seconds_remaining > 0 %}
+        <p>Restam: {{ days_remaining }} dias, {{ hours_remaining }} horas, {{ minutes_remaining }} minutos,
+            {% if seconds_remaining %}
+            {{ seconds_remaining }} segundos
+            {% else %}
+            nada para mostrar
+            {% endif %}
+        </p>
         <p>Pedido Inicial: {{ sale.initialAsk }}€</p>
 
         <p>Bid Mais Alta:
@@ -28,20 +39,12 @@
 
         <p>Maior Bidder: {{ sale.currentHighestBid.bidder.name }}</p>
 
-        {% if days_remaining > 0 or hours_remaining > 0 or minutes_remaining > 0 or seconds_remaining > 0 %}
-        <h2>Restam: {{ days_remaining }} dias, {{ hours_remaining }} horas, {{ minutes_remaining }} minutos,
-            {% if seconds_remaining %}
-            {{ seconds_remaining }} segundos
-            {% else %}
-            nada para mostrar
-            {% endif %}
-        </h2>
         {% if user.is_authenticated %}
 
         <form method="POST" action="{% url 'leiloaoapp:colocarBid' sale.id %}">
             {% csrf_token %}
             <label for="new_bid">Colocar Bid:</label>
-            <input type="number" id="new_bid" name="new_bid" step="any" required>
+            <input type="number" id="new_bid" name="new_bid" step="any" pattern="^\d{1,8}(\.\d{0,2})?$" required>
             <input type="submit" value="Colocar Bid">
         </form>
         <br>
@@ -69,6 +72,15 @@
         {% endif %}
     </div>
 </div>
+<script>
+    const bidValueInput = document.getElementById('new_bid');
+    bidValueInput.addEventListener('input', function() {
+        const value = bidValueInput.value;
+        if (value && !/^(\d{0,8}(\.\d{0,2})?)?$/.test(value)) {
+            bidValueInput.value = value.slice(0, -1);
+        }
+    });
+</script>
 {% endblock %}
 </body>
 </html>

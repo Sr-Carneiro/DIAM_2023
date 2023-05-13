@@ -23,5 +23,6 @@ urlpatterns = [
     path('userManagement/', views.userManagement, name='userManagement'),
     path('deactivateUser/<int:id>', views.deactivateUser, name='deactivateUser'),
     path('activateUser/<int:id>', views.activateUser, name='activateUser'),
+    path('get_sale_image/<int:sale_id>/', views.get_sale_image, name='get_sale_image'),
 
 ]

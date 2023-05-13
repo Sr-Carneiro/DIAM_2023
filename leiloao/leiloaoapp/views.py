@@ -1,22 +1,22 @@
+import os
 from datetime import datetime, timedelta
 from sqlite3 import OperationalError
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import AppUser
-from django.http import Http404, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
 from django.core.checks import messages
 from django.contrib import messages
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User
 
 from .models import Sale, Bid, AppUser, WatchListLine
+from django.conf.global_settings import MEDIA_URL
+from django.conf.global_settings import MEDIA_ROOT
+
+
 
 
 # FALTA FAZER
@@ -34,22 +34,21 @@ from .models import Sale, Bid, AppUser, WatchListLine
 # TODO: NICETOHAVE:
 
 # POR BONITO
-# TODO: Remover item da watchlist
 # TODO: Watchlist -> POR BONITO
 # TODO: As Minhas Bids -> POR BONITO
 # TODO: Ver Perfil -> POR BONITO, ADICIONAR COISAS(Mostrar foto)
 # TODO: Login e Logout -> POR BONITO
 # TODO: Registar -> Form -> Emanuel -> POR BONITO
-# TODO: Ver Todos as Sales -> POR BONITO
 # TODO: Adicionar Sales -> POR BONITO
+# TODO: Ver Todos as Sales -> POR BONITO
+
+# DONE
+# TODO: Remover item da watchlist DONE
 # TODO: Controlos de users ativos/inativos DONE
 # TODO: SuperUsers podem remover qualquer Sale DONE
 # TODO: Adicionar à minha Watchlist DONE
-
-# DONE
-# TODO: Zona de Administrador -> desativar outros users. Ver lista de users.
-# TODO: Remover Sale -> DONE
-# TODO: Fazer uma Bid (Form) -> DONE(TESTAR)
+# TODO: Remover Sale DONE
+# TODO: Fazer uma Bid (Form) DONE
 
 
 def template(request):
@@ -182,6 +181,9 @@ def adicionarSale(request, timezone=None):
         bidStartDate_str = request.POST['bidStartDate']
         bidEndDate_str = request.POST['bidEndDate']
         seller_username = request.user.username
+        image = request.FILES['image']
+
+        file_path = os.path.join('leiloaoapp', 'static', 'leiloaoapp', 'images', image.name)
 
         bidStartDate = datetime.strptime(bidStartDate_str, '%Y-%m-%dT%H:%M')
         bidEndDate = datetime.strptime(bidEndDate_str, '%Y-%m-%dT%H:%M')
@@ -191,7 +193,7 @@ def adicionarSale(request, timezone=None):
         creatingSale = Sale.objects.create(
             title=title,
             description=description,
-            image_path="",
+            image_path=image,
             isSold=False,
             initialAsk=initialAsk,
             bidStartDate=bidStartDate,
@@ -201,6 +203,10 @@ def adicionarSale(request, timezone=None):
             bidder=None,
             currentHighestBid=None
         )
+        with open(file_path, 'wb+') as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
         creatingSale.save()
         return HttpResponseRedirect(reverse('leiloaoapp:index'))
     else:
@@ -294,11 +300,18 @@ def colocarBid(request, sale_id):
         if value <= sale.initialAsk:
             return render(request, 'leiloaoapp/detalhe.html',
                           {'sale': sale, 'error_message': 'O valor do Bid deve ser maior que o preço inicial.'})
-        if timezone.now() > sale.bidEndDate:
+
+        now = timezone.now() + timedelta(hours=1)
+        now_datetime = datetime.fromisoformat(now.isoformat())
+
+        if now > sale.bidEndDate:
             return render(request, 'leiloaoapp/detalhe.html', {'sale': sale, 'error_message': 'Esta Sale já terminou.'})
-        if timezone.now() < sale.bidStartDate:
-            print(timezone.now())
+
+        if now < sale.bidStartDate:
+            print(now())
+            print(now_datetime)
             print(sale.bidStartDate)
+            print(sale.bidEndDate)
             return render(request, 'leiloaoapp/detalhe.html',
                           {'sale': sale, 'error_message': 'Esta Sale ainda não começou.'})
         if request.user.is_authenticated:
@@ -366,3 +379,20 @@ def activateUser(request, id):
     user.active = True
     user.save()
     return render(request, 'leiloaoapp/userManagement.html', {'user_list': AppUser.objects.all().values()})
+
+
+def get_profile_image(request):
+    user=request.user
+    appuser = user.appuser
+    if user.is_authenticated:
+        image = appuser.image_path
+        with open(image, 'rb') as image:
+            return HttpResponse(image.read(), content_type="image/jpeg")
+    return HttpResponse(status=404)
+
+
+def get_sale_image(request, sale_id):
+    sale=Sale.objects.get(id=sale_id)
+    image = sale.image_path
+    with open(image, 'rb') as image:
+        return HttpResponse(image.read(), content_type="image/jpeg")

@@ -10,7 +10,6 @@
 <div class="container">
     <div class="centered">
         <h1>Bem-vindo ao Leiloão</h1>
-
         {% if user.is_authenticated %}
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
@@ -28,7 +27,6 @@
                 <th>Colocada Por</th>
                 <th>Termina Em</th>
                 <th>Imagem</th>
-                <th>Ativa</th>
             </tr>
             </thead>
             <tbody>
@@ -42,11 +40,6 @@
                 <td>{{ sale.seller.name }}</td>
                 <td>{{ sale.bidEndDate|default:" " }}</td>
                 <td>{{ sale.image_path|default:" " }}</td>
-                {% if user.is_superuser %}
-                <td>
-                <a href="{% url 'leiloaoapp:remove_sale' sale.id %}">Gestão de Utilizadores</a>
-                </td>
-                {% endif %}
             </tr>
             {% empty %}
             <tr>

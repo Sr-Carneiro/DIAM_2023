@@ -8,21 +8,47 @@
 <body>
 {% block content %}
 <div class="container">
-    <div class="centered">
+   <div class="centered">
         <h1>As Minhas Bids</h1>
         {% if user.is_authenticated %}
         {% else %}
         <p>Faça Login ou registe-se para começar</p>
+
         {% endif %}
         <br>
         {% if bid_list %}
-        <ul>
+        <form action="{% url 'leiloaoapp:myBid' %}" method="get">
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Bid Atual</th>
+                <th>Seller</th>
+                <th>Termina Em</th>
+                <th>Imagem</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for bid in bid_list %}
-            <li>{{ bid.sale.title }} - Valor: {{ bid.value }}</li>
+            <tr>
+                <td>
+                    <a href="{% url 'leiloaoapp:detalhe' bid.id %}">
+                        {{ bid.sale.title|default:"" }}
+                    </a>
+                </td>
+                <td>{{ bid.value|default:"0" }}€</td>
+                <td>{{ bid.sale.seller.name }}</td>
+                <td>{{ bid.sale.bidEndDate|default:"" }}</td>
+                <td>{{ bid.sale.image_path|default:"" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Não foram encontradas Bids.</td>
+            </tr>
             {% endfor %}
-        </ul>
-        {% else %}
-        <p>Não há nenhuma bid disponível.</p>
+            </tbody>
+        </table>
         {% endif %}
     </div>
 </div>

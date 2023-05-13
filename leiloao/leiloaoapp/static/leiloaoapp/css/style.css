@@ -20,17 +20,6 @@ nav ul {
   list-style: none;
 }
 
-div > img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 100%;
-  width: 100%;
-}
 
 
 
@@ -138,16 +127,7 @@ label > h6 {
 
 }
 
-.centered img{
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%; /* make the image round */
-  display: block;
-}
+
 
 .up-center a{
   padding: 20px;
@@ -188,7 +168,7 @@ label > h6 {
   width: 30%;
 }
 
-img {
+.img {
   position: absolute;
   top: 0;
   left: 0;

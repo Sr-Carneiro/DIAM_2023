@@ -62,6 +62,14 @@
 
                 submitButton.disabled = !isFilled;
             });
+
+            const bidValueInput = document.getElementById('initialAsk');
+            bidValueInput.addEventListener('input', function () {
+                const value = bidValueInput.value;
+                if (value && !/^(\d{0,8}(\.\d{0,2})?)?$/.test(value)) {
+                    bidValueInput.value = value.slice(0, -1);
+                }
+            });
         </script>
 
     </div>
