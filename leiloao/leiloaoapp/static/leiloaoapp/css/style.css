@@ -78,7 +78,7 @@ label > h6 {
   right: 16px;
   display: inline-block;
   padding: 10px 16px;
-  background-color: #5f9ea0;
+  background-color: #c53e3e;
   color: #eee5cf;
   text-align: center;
   text-decoration: none;
@@ -108,13 +108,12 @@ label > h6 {
   position: absolute;
   top: 20%;
   left: 50%;
-  padding: 9px 20px;
   background-color: #5f9ea0;
-  border-radius: 10px;
+  border-radius: 20px;
   font-size: larger;
   color: #eee5cf;
   z-index: 1;
-  transform: translate(-50%, 4%);
+  transform: translate(-50%, -4%);
   text-align: center;
 }
 
@@ -149,6 +148,7 @@ label > h6 {
   padding: 8px 16px;
   background-color: #317567;
   color: #eee5cf
+  border-radius: 20px;
 }
 
 .up-center a:hover {
