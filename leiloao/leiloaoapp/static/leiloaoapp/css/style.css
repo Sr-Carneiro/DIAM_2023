@@ -78,7 +78,7 @@ label > h6 {
   right: 16px;
   display: inline-block;
   padding: 10px 16px;
-  background-color: #c53e3e;
+  background-color: #deb887;
   color: #eee5cf;
   text-align: center;
   text-decoration: none;
@@ -142,13 +142,13 @@ label > h6 {
 
 /* Nav Bar */
 .up-center {
+border-radius: 20px;
   left: 50%;
   top: 10%;
   display: inline-block;
   padding: 8px 16px;
-  background-color: #317567;
+  background-color: #5f9ea0;
   color: #eee5cf
-  border-radius: 20px;
 }
 
 .up-center a:hover {
@@ -288,4 +288,12 @@ td a {
 
 td a:hover {
   text-decoration: underline;
+}
+
+
+.login-text {
+    color: green;
+}
+.logout-text {
+    color: red;
 }

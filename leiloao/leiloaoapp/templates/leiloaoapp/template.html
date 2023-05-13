@@ -8,7 +8,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.username').css('color', 'gold');
+            // Verifica se o usuário está autenticado
+            var isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+
+            // Obtém a referência ao elemento de texto de login/logout
+            var loginLogoutText = $('.top-right a');
+
+            // Adiciona a classe CSS com base na autenticação do usuário
+            if (isAuthenticated) {
+                loginLogoutText.addClass('logout-text');
+            } else {
+                loginLogoutText.addClass('login-text');
+            }
         });
     </script>
 </head>
