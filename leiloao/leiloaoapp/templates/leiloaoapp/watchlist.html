@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Leiloao - Watchlist</title>
+    {% load static %}
 </head>
 <body>
 {% block content %}
@@ -41,7 +42,9 @@
                 <td>{{ item.sale.currentHighestBid.bidder.name|default:" " }}</td>
 
                 <td>{{ item.sale.bidEndDate|default:" " }}</td>
-                <td>{{ item.sale.image_path|default:" " }}</td>
+                <td>
+                    <img src="{% static 'leiloaoapp/images/'|add:item.sale.image_path %}" class="index-img" alt="No image available">
+                </td>
                 <td>
                     <a href="{% url 'leiloaoapp:removeFromWatchlist' item.id %}">
                         Remover

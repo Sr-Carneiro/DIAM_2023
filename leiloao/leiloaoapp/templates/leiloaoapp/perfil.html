@@ -1,9 +1,9 @@
 {% extends "leiloaoapp/template.html" %}
-
+{% load static %}
 {% block content %}
   <div class="centered">
     <h2>Perfil de {{ user.username }}</h2>
-    <img src="{{ MEDIA_URL }}{{ user.appuser.image_path }}" style="max-width: 5cm; max-height: 4.5cm;">
+    <img src="{% static 'leiloaoapp/images/'|add:user.appuser.image_path %}" class="index-img">
     <br>
     <p><strong>Nome:</strong> {{ user.appuser.name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>

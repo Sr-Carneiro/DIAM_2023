@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Leiloao - Índice</title>
+    {% load static %}
 </head>
 <body>
 {% block content %}
@@ -39,7 +40,9 @@
                 <td>{{ sale.currentHighestBid.value|default:"0" }}€</td>
                 <td>{{ sale.seller.name }}</td>
                 <td>{{ sale.bidEndDate|default:" " }}</td>
-                <td>{{ sale.image_path|default:" " }}</td>
+                <td>
+                    <img src="{% static 'leiloaoapp/images/'|add:sale.image_path %}" class="index-img" alt="No image available">
+                </td>
             </tr>
             {% empty %}
             <tr>

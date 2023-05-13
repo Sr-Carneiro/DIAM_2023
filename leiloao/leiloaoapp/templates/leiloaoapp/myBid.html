@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Leiloao - Minhas Bids</title>
+    {% load static %}
 </head>
 <body>
 {% block content %}
 <div class="container">
-   <div class="centered">
+    <div class="centered">
         <h1>As Minhas Bids</h1>
         {% if user.is_authenticated %}
         {% else %}
@@ -26,7 +27,6 @@
                 <th>Bid Atual</th>
                 <th>Seller</th>
                 <th>Termina Em</th>
-                <th>Imagem</th>
             </tr>
             </thead>
             <tbody>
@@ -40,7 +40,6 @@
                 <td>{{ bid.value|default:"0" }}€</td>
                 <td>{{ bid.sale.seller.name }}</td>
                 <td>{{ bid.sale.bidEndDate|default:"" }}</td>
-                <td>{{ bid.sale.image_path|default:"" }}</td>
             </tr>
             {% empty %}
             <tr>

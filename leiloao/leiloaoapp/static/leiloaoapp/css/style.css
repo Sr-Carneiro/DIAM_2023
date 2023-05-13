@@ -20,9 +20,6 @@ nav ul {
   list-style: none;
 }
 
-
-
-
 nav li {
   margin: 0 20px;
 }
@@ -47,7 +44,6 @@ label > h6 {
   margin-bottom: 5px;
 }
 
-/* Container holding the image and the text */
 .container {
   text-align: center;
   color: darkslategrey;
@@ -56,14 +52,12 @@ label > h6 {
 
 }
 
-/* Bottom left text */
 .bottom-left {
   position: absolute;
   bottom: 8px;
   left: 16px;
 }
 
-/* Top left text */
 .top-left {
   position: absolute;
   top: 10px;
@@ -79,7 +73,6 @@ label > h6 {
   z-index: -1;
 }
 
-/* Top right text */
 .top-right {
   position: absolute;
   top: 8px;
@@ -93,11 +86,11 @@ label > h6 {
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
+
 .top-right a:hover {
   background-color: #756036;
 }
 
-/* Bottom right text */
 .bottom-right {
   position: fixed;
   bottom: 8px;
@@ -127,7 +120,15 @@ label > h6 {
 
 }
 
+.detalhes-img{
+  width: 75%;
+  height: auto;
+}
 
+.index-img{
+  width: 40%;
+  height: auto;
+}
 
 .up-center a{
   padding: 20px;
@@ -156,9 +157,6 @@ label > h6 {
   background-color: #756036;
 }
 
-
-/*TODO: resolver problema de mostrar imagens retangulares
-   so quero uma janela quadrada do centro da imagem*/
 .userimage {
   position: absolute;
   top: 0;
@@ -166,6 +164,8 @@ label > h6 {
   z-index: 1;
   height: 30%;
   width: 30%;
+  display: flex;
+  align-items: center;
 }
 
 .img {
@@ -177,18 +177,11 @@ label > h6 {
   border-radius: 50%;
   background-repeat: no-repeat;
   background-position: center;
-  height: 100%;
-  width: 100%;
 }
 
 a {
   text-decoration: none;
   color: #eee5cf;
-}
-
-.userimage {
-  display: flex;
-  align-items: center;
 }
 
 .userimage img {

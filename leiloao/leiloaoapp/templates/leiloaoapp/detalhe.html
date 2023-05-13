@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Leiloao - Índice</title>
+{% load static %}
 </head>
 <body>
 {% block content %}
@@ -15,9 +16,7 @@
         <h1>Sale: "<a href="{% url 'leiloaoapp:detalhe' sale.id %}">
                         {{ sale.title|default:" " }}</a>"
         </h1>
-        <p>
-        <img src="{{ sale.image_path.url }}" alt="No Image">
-        </p>
+            <img src="{% static 'leiloaoapp/images/'|add:sale.image_path %}" class="detalhes-img" alt="No image available">
         <p>{{ sale.description }}</p>
         {% if days_remaining > 0 or hours_remaining > 0 or minutes_remaining > 0 or seconds_remaining > 0 %}
         <p>Restam: {{ days_remaining }} dias, {{ hours_remaining }} horas, {{ minutes_remaining }} minutos,
