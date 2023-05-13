@@ -117,6 +117,19 @@ label > h6 {
   text-align: center;
 }
 
+.centered2 {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  background-color: #5f9ea0;
+  border-radius: 20px;
+  font-size: larger;
+  color: #eee5cf;
+  z-index: 1;
+  transform: translate(-30%, -4%);
+  text-align: center;
+}
+
 .detalhes-img {
   width: 75%;
   height: auto;
@@ -198,6 +211,11 @@ a {
 .centered {
   text-align: center;
   margin-top: 50px;
+}
+
+.centered2 {
+  text-align: center;
+  margin-top: 110px;
 }
 
 .centered h2 {
