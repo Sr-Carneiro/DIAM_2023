@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'leiloaoapp/css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.username').css('color', 'gold');
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -37,12 +43,12 @@
             {% endif %}
         </p>
     </div>
-        {% block content %}
     <div class="centered">
-        <!-- Zona que vai ser diferente em todas as páginas, o resto mantém-se igual -->
-            <p>Zona que vai ser diferente em todas as páginas, o resto mantém-se igual</p>
-    </div>
+        <!-- Zone that will be different on each page, the rest remains the same -->
+        {% block content %}
+            <p>Zone that will be different on each page, the rest remains the same</p>
         {% endblock %}
+    </div>
     <div class="top-right">
         {% if user.is_authenticated %}
             <a href="{% url 'leiloaoapp:logout_view' %}">Logout</a>
@@ -59,3 +65,4 @@
 <script src="{% static 'leiloaoapp/js/earthtones.js' %}"></script>
 </body>
 </html>
+

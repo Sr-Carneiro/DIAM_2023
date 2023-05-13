@@ -5,25 +5,21 @@ from django.db import models
 from django.utils import timezone
 import datetime
 
-#AppUser: Representa um utilizador da aplicação
-
 
 class AppUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
-    #TODO: Caminho do image_path
     image_path = models.CharField(max_length=255, default='.png', null=True)
     active = models.BooleanField('active', default=True)
 
     def __str__(self):
         return self.name
 
-# UserType: Representa um tipo de Utilizador(Admin, user, etc)
-
 
 class UserType(models.Model):
     description = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='sale_images/')
 
     def __str__(self):
         return self.description
@@ -32,7 +28,6 @@ class UserType(models.Model):
 class Sale(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255, null=True)
-    # TODO: Caminho do image_path
     image_path = models.CharField('Caminho da Imagem', max_length=255, default='.png')
     isSold = models.BooleanField('Artigo Vendido', default=False)
     initialAsk = models.DecimalField(max_digits=10, decimal_places=2)
@@ -54,3 +49,9 @@ class WatchListLine(models.Model):
     appUser = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='AppUser')
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name='WatchingSale')
 
+
+class Review(models.Model):
+    rating = models.IntegerField()
+    comment = models.TextField()
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name='SaleReview')
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='UserReview')
