@@ -76,35 +76,35 @@ def registar(request):
         email = request.POST['email']
         primeiro_nome = request.POST['primeiro_nome']
         ultimo_nome = request.POST['ultimo_nome']
-        image = request.FILES.get('image', None)  # Obter o arquivo de imagem (se existir)
+        image_name = os.path.join('default_user_img.png')
 
         # Check if the user already exists
         if User.objects.filter(username=utilizador).exists():
             return render(request, 'leiloaoapp/erro.html')
 
-        user = User.objects.create_user(
+        if 'image' in request.FILES:
+            image = request.FILES['image']
+            print('image name: ', image.name)
+            file_path = os.path.join('leiloaoapp', 'static', 'leiloaoapp', 'images', image.name)
+            with open(file_path, 'wb+') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+            image_name = image.name
+
+        creatingUser = User.objects.create_user(
             username=utilizador,
             email=email,
             password=palavra_passe,
             first_name=primeiro_nome,
             last_name=ultimo_nome
         )
-        appuser = AppUser.objects.create(user=user, name=utilizador, email=email)
-
-        if image:  # Se a imagem existir
-            # Salvar a imagem no diretório de mídia
-            filename = default_storage.save('images/{}'.format(image.name), image)
-            # Definir o caminho da imagem no modelo AppUser
-            appuser.image = filename
-
-            # Redimensionar a imagem e salvá-la no mesmo caminho
-            filepath = 'media/{}'.format(filename)
-            with Image.open(filepath) as img:
-                tamanho = (300, 300)  # Novo tamanho da imagem
-                img = img.resize(tamanho)
-                img.save(filepath)
-
+        appuser = AppUser.objects.create(
+            user=creatingUser,
+            name=utilizador,
+            email=email,
+            image_path=image_name)
         appuser.save()
+
 
         messages.add_message(request, messages.SUCCESS, 'Utilizador criado com sucesso')
 
@@ -181,19 +181,25 @@ def adicionarSale(request, timezone=None):
         bidStartDate_str = request.POST['bidStartDate']
         bidEndDate_str = request.POST['bidEndDate']
         seller_username = request.user.username
-        image = request.FILES['image']
-
-        file_path = os.path.join('leiloaoapp', 'static', 'leiloaoapp', 'images', image.name)
+        image_name = os.path.join('default_sale_image.png')
 
         bidStartDate = datetime.strptime(bidStartDate_str, '%Y-%m-%dT%H:%M')
         bidEndDate = datetime.strptime(bidEndDate_str, '%Y-%m-%dT%H:%M')
 
         seller = get_object_or_404(AppUser, user__username=seller_username)
 
+        if 'image' in request.FILES:
+            image = request.FILES['image']
+            file_path = os.path.join('leiloaoapp', 'static', 'leiloaoapp', 'images', image.name)
+            with open(file_path, 'wb+') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+            image_name = image.name
+
         creatingSale = Sale.objects.create(
             title=title,
             description=description,
-            image_path=image,
+            image_path=image_name,
             isSold=False,
             initialAsk=initialAsk,
             bidStartDate=bidStartDate,
@@ -203,11 +209,7 @@ def adicionarSale(request, timezone=None):
             bidder=None,
             currentHighestBid=None
         )
-        with open(file_path, 'wb+') as f:
-            for chunk in image.chunks():
-                f.write(chunk)
 
-        creatingSale.save()
         return HttpResponseRedirect(reverse('leiloaoapp:index'))
     else:
         return render(request, 'leiloaoapp/adicionarSale.html')

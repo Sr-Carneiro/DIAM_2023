@@ -5,7 +5,8 @@
     <h2>Perfil de {{ user.username }}</h2>
     <img src="{% static 'leiloaoapp/images/'|add:user.appuser.image_path %}" class="index-img">
     <br>
-    <p><strong>Nome:</strong> {{ user.appuser.name }}</p>
+    <p><strong>Nome:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Data de criação:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
   </div>

@@ -129,6 +129,10 @@ label > h6 {
   width: 40%;
   height: auto;
 }
+.addSale-img{
+  width: 50%;
+  height: auto;
+}
 
 .up-center a{
   padding: 20px;
